@@ -3,7 +3,6 @@
 #include <vector>
 #include <cstdlib>
 #include <cstdio> 
-#include <locale.h> 
 #include "Film.h" 
 #include "Sala.h" 
 #include "Proiectie.h" 
@@ -11,6 +10,62 @@
 using namespace std;
 
 enum StareAplicatie { MENIU_PRINCIPAL, BILETE, SELECTIE_LOCURI, BAR, PROMOTII };
+
+struct ProdusBar {
+    string nume;
+    float pret;
+    ProdusBar(string n, float p) : nume(n), pret(p) {}
+};
+
+struct Promotie {
+    string titlu;
+    string descriere;
+    Promotie(string t, string d) : titlu(t), descriere(d) {}
+};
+
+// --- MASCA STANGA (Jason) ---
+void deseneazaMascaHorror(int y, int x, int culoare) {
+    attron(COLOR_PAIR(culoare) | A_BOLD); 
+    mvprintw(y,      x, "             __________       ");
+    mvprintw(y + 1,  x, "          .-'     OO    '-. ");
+    mvprintw(y + 2,  x, "        .'   O          O  '.");
+    mvprintw(y + 3,  x, "       / O   O  O    O  O   O\\");  
+    mvprintw(y + 4,  x, "      | O    __  \\__/  __    O|");  
+    mvprintw(y + 5,  x, "      |   O |  |      |  | O  |");
+    mvprintw(y + 6,  x, "      |     |__|      |__|    |");
+    mvprintw(y + 7,  x, "      |  O        __        O |");
+    mvprintw(y + 8,  x, "      |    O     |__|     O   |");
+    mvprintw(y + 9,  x, "      |  O                  O |");
+    mvprintw(y + 10, x, "      |         O    O        |");
+    mvprintw(y + 11, x, "      |  O      O    O      O |");
+    mvprintw(y + 12, x, "       \\   O    O    O    O  /");  
+    mvprintw(y + 13, x, "        '.                 .'  ");
+    mvprintw(y + 14, x, "          '-.___________.-'     ");
+    attroff(COLOR_PAIR(culoare) | A_BOLD);
+}
+
+// --- MASCA DREAPTA (Noua ta Masca Teatrala) ---
+void deseneazaMascaNoua(int y, int x, int culoare) {
+    attron(COLOR_PAIR(culoare) | A_BOLD);
+    mvprintw(y,      x, "            ____________            ");
+    mvprintw(y + 1,  x, "         .-'  ________  '-.         ");
+    mvprintw(y + 2,  x, "       .'  .-'        '-.  '.       ");
+    mvprintw(y + 3,  x, "      /  .'              '.  \\      ");
+    mvprintw(y + 4,  x, "     |  (    :'.    .':    )  |     ");
+    mvprintw(y + 5,  x, "     |  /  ..' :    : '..  \\  |     ");
+    mvprintw(y + 6,  x, "     | (  '..-'      '-..'  ) |     ");
+    mvprintw(y + 7,  x, "     |  \\       (/\\)       /  |   ");
+    mvprintw(y + 8,  x, "     |  |      ______      |  |     ");
+    mvprintw(y + 9,  x, "     |   \\    (      )    /   |     ");
+    mvprintw(y + 10, x, "     |    |   |      |   |    |     ");
+    mvprintw(y + 11, x, "     |     \\  \\      /  /     |     ");
+    mvprintw(y + 12, x, "     |      | '.    .' |      |     ");
+    mvprintw(y + 13, x, "      \\      \\ |    | /      /      ");
+    mvprintw(y + 14, x, "       '.     | |  | |     .'       ");
+    mvprintw(y + 15, x, "         '-.__| '..' |__.-'         ");
+    mvprintw(y + 16, x, "               '.__.'                ");
+    attroff(COLOR_PAIR(culoare) | A_BOLD);
+}
 
 void afiseazaAntet(int startX) {
     attron(COLOR_PAIR(2) | A_BOLD); 
@@ -24,21 +79,10 @@ void afiseazaAntet(int startX) {
     attron(COLOR_PAIR(1)); 
     mvprintw(5, startX, "=================================================");
     attroff(COLOR_PAIR(1));
-    
-    // Desenam simbolurile premium pe laterale!
-    // Le punem la randul 2 (pe mijlocul logoului)
-    if (startX > 6 && (startX + 49 + 6) < COLS) {
-        mvprintw(2, startX - 4, "🎭");
-        
-        attron(COLOR_PAIR(2) | A_BOLD); // O facem aurie pe Fleur-de-lis
-        mvprintw(2, startX + 51, "⚜︎");
-        attroff(COLOR_PAIR(2) | A_BOLD);
-    }
 }
 
 void deseneazaButonD(int y, int x, string text, int culoare, int latime) {
     attron(COLOR_PAIR(culoare) | A_BOLD);
-    
     mvprintw(y, x, "+");
     for(int i = 0; i < latime - 2; i++) printw("-");
     printw("+");
@@ -47,7 +91,6 @@ void deseneazaButonD(int y, int x, string text, int culoare, int latime) {
     int spatiiLibere = (latime - 2) - text.length(); 
     int spatiiStanga = spatiiLibere / 2;
     int spatiiDreapta = spatiiLibere - spatiiStanga;
-    
     for(int i = 0; i < spatiiStanga; i++) printw(" "); 
     printw("%s", text.c_str());                   
     for(int i = 0; i < spatiiDreapta; i++) printw(" ");
@@ -56,7 +99,46 @@ void deseneazaButonD(int y, int x, string text, int culoare, int latime) {
     mvprintw(y + 2, x, "+");
     for(int i = 0; i < latime - 2; i++) printw("-");
     printw("+");
+    attroff(COLOR_PAIR(culoare) | A_BOLD);
+}
+
+// --- NOU: Design tip CUPON pentru Promotii (Are 5 randuri inaltime) ---
+void deseneazaCasutaPromotie(int y, int x, string titlu, string descriere, int culoare, int latime) {
+    attron(COLOR_PAIR(culoare) | A_BOLD);
     
+    // Top border
+    mvprintw(y, x, "+");
+    for(int i = 0; i < latime - 2; i++) printw("-");
+    printw("+");
+
+    // Title (Randul 1)
+    mvprintw(y + 1, x, "|");
+    int padT1 = (latime - 2 - titlu.length()) / 2;
+    int padT2 = (latime - 2 - titlu.length()) - padT1;
+    for(int i=0; i<padT1; i++) printw(" ");
+    printw("%s", titlu.c_str());
+    for(int i=0; i<padT2; i++) printw(" ");
+    printw("|");
+
+    // Separator (Randul 2) - Linie punctata
+    mvprintw(y + 2, x, "|");
+    for(int i = 0; i < latime - 2; i++) printw(".");
+    printw("|");
+
+    // Description (Randul 3)
+    mvprintw(y + 3, x, "|");
+    int padD1 = (latime - 2 - descriere.length()) / 2;
+    int padD2 = (latime - 2 - descriere.length()) - padD1;
+    for(int i=0; i<padD1; i++) printw(" ");
+    printw("%s", descriere.c_str());
+    for(int i=0; i<padD2; i++) printw(" ");
+    printw("|");
+
+    // Bottom border
+    mvprintw(y + 4, x, "+");
+    for(int i = 0; i < latime - 2; i++) printw("-");
+    printw("+");
+
     attroff(COLOR_PAIR(culoare) | A_BOLD);
 }
 
@@ -69,7 +151,6 @@ void deseneazaEcranCinema(int y, int x) {
 }
 
 int main() {
-    setlocale(LC_ALL, ""); // Activeaza suportul pentru Emoji/UTF-8
     initscr();
     cbreak();             
     noecho();             
@@ -83,7 +164,6 @@ int main() {
     init_pair(3, COLOR_GREEN, -1);
     init_pair(4, COLOR_RED, -1);
 
-    // Activam atat click-ul cat si scroll up (BUTTON4) si scroll down (BUTTON5)
     mousemask(BUTTON1_PRESSED | BUTTON1_CLICKED | BUTTON4_PRESSED | BUTTON5_PRESSED, NULL);
     printf("\033[?1000h\n"); 
 
@@ -98,7 +178,6 @@ int main() {
     Film f4("Joker: Folie a Deux", 138, 30.00);
 
     vector<Proiectie> programAzi;
-    
     programAzi.push_back(Proiectie(f1, salaIMAX, "10:00"));
     programAzi.push_back(Proiectie(f2, salaVIP, "10:15"));
     programAzi.push_back(Proiectie(f3, salaStd1, "10:30"));
@@ -116,6 +195,26 @@ int main() {
     programAzi.push_back(Proiectie(f4, salaStd1, "20:30"));
     programAzi.push_back(Proiectie(f1, salaStd2, "21:30"));
 
+    vector<ProdusBar> meniuBar;
+    meniuBar.push_back(ProdusBar("Apa Plata 0.5L", 8.00));
+    meniuBar.push_back(ProdusBar("Apa Minerala 0.5L", 8.50));
+    meniuBar.push_back(ProdusBar("Suc Cola/Fanta 0.5L", 12.00));
+    meniuBar.push_back(ProdusBar("Lipton Ice Tea 0.5L", 12.00));
+    meniuBar.push_back(ProdusBar("Popcorn Mic", 15.00));
+    meniuBar.push_back(ProdusBar("Popcorn Mare", 22.00));
+    meniuBar.push_back(ProdusBar("Portie Nachos", 20.00));
+    meniuBar.push_back(ProdusBar("Popcorn Mic + Suc", 24.00));
+    meniuBar.push_back(ProdusBar("Popcorn Mare + Suc", 30.00));
+    meniuBar.push_back(ProdusBar("Nachos + Suc", 29.00));
+
+    // --- BAZA DE DATE PENTRU PROMOTII ---
+    vector<Promotie> listaPromotii;
+    listaPromotii.push_back(Promotie("MARTEA FILMULUI", "1+1 Gratis la orice bilet cumparat in zilele de marti."));
+    listaPromotii.push_back(Promotie("REDUCERE ELEVI/STUDENTI", "Reducere 20% la orice film pe baza carnetului vizat."));
+    listaPromotii.push_back(Promotie("PACHETUL FAMILIEI", "4 Bilete + 2 Popcorn Mare + 4 Sucuri = Doar 160 RON!"));
+    listaPromotii.push_back(Promotie("HAPPY HOUR LA BAR", "Vineri intre 14:00 - 17:00 primesti 50% reducere la Nachos."));
+    listaPromotii.push_back(Promotie("PREMIERE VIP", "La achizitia unui bilet VIP primesti o sampanie gratuit."));
+
     bool ruleaza = true;
     MEVENT event; 
     StareAplicatie stareCurenta = MENIU_PRINCIPAL;
@@ -123,6 +222,13 @@ int main() {
     
     int offsetFilme = 0; 
     int maxFilmePeEcran = 3; 
+
+    int offsetBar = 0; 
+    int maxRanduriBar = 3; 
+
+    // Variabile pentru Promotii
+    int offsetPromotii = 0;
+    int maxPromotiiPeEcran = 2; // Aratam cate 2 cupoane simultan, fiind inalte
 
     while (ruleaza) {
         int xLogo = (COLS - 49) / 2;
@@ -138,10 +244,19 @@ int main() {
         int latimeButonFilm = 66; 
         int xButonFilm = (COLS - latimeButonFilm) / 2;
 
+        int latimeCupon = 70; // Cupoanele le facem mai late ca sa incapa descrierea
+        int xCupon = (COLS - latimeCupon) / 2;
+
         clear();
         
         if (stareCurenta == MENIU_PRINCIPAL) {
             afiseazaAntet(xLogo);
+            
+            if (xButon >= 34 && (xButon + 28 + 40) < COLS) {
+                deseneazaMascaHorror(6, xButon - 34, 4); 
+                deseneazaMascaNoua(5, xButon + 32, 1);   
+            }
+
             deseneazaButonD(7, xButon, "1. Cumpara Bilete", 3, 28);   
             deseneazaButonD(11, xButon, "2. Meniu Bar", 3, 28);       
             deseneazaButonD(15, xButon, "3. Oferte si Promotii", 3, 28); 
@@ -154,6 +269,11 @@ int main() {
         else if (stareCurenta == BILETE) {
             afiseazaAntet(xLogo);
             
+            if (xButonFilm >= 34 && (xButonFilm + latimeButonFilm + 40) < COLS) {
+                deseneazaMascaHorror(7, xButonFilm - 34, 4); 
+                deseneazaMascaNoua(6, xButonFilm + latimeButonFilm + 4, 1);
+            }
+
             attron(COLOR_PAIR(3) | A_BOLD);
             mvprintw(7, xLogo - 2, "[ SECTIUNEA BILETE - PROGRAMUL MULTIPLEXULUI ]");
             attroff(COLOR_PAIR(3) | A_BOLD);
@@ -175,17 +295,9 @@ int main() {
             int yControls = 21;
             int xControls = (COLS - 60) / 2; 
             
-            if (offsetFilme > 0) {
-                deseneazaButonD(yControls, xControls, "/\\ SUS /\\", 2, 16);
-            }
+            if (offsetFilme > 0) { deseneazaButonD(yControls, xControls, "/\\ SUS /\\", 2, 16); }
             deseneazaButonD(yControls, xControls + 20, "0. Inapoi", 4, 20);
-            if (offsetFilme + maxFilmePeEcran < programAzi.size()) {
-                deseneazaButonD(yControls, xControls + 44, "\\/ JOS \\/", 2, 16);
-            }
-            
-            attron(COLOR_PAIR(1));
-            mvprintw(24, xLogo - 6, "-> Foloseste rotita de mouse sau click pt a naviga!");
-            attroff(COLOR_PAIR(1));
+            if (offsetFilme + maxFilmePeEcran < programAzi.size()) { deseneazaButonD(yControls, xControls + 44, "\\/ JOS \\/", 2, 16); }
         }
         else if (stareCurenta == SELECTIE_LOCURI && indexSelectat != -1) {
             deseneazaEcranCinema(2, xSalaCentrat);
@@ -220,19 +332,67 @@ int main() {
         }
         else if (stareCurenta == BAR) {
             afiseazaAntet(xLogo);
-            attron(COLOR_PAIR(3));
-            mvprintw(7, xLogo + 16, "[ SECTIUNEA BAR ]");
-            attroff(COLOR_PAIR(3));
-            mvprintw(9, xLogo + 10, "Suc: 10 RON  |  Nachos: 15 RON");
-            deseneazaButonD(19, xButon, "0. Inapoi la Meniu", 4, 28);
+            attron(COLOR_PAIR(3) | A_BOLD);
+            mvprintw(7, xLogo + 6, "[ SECTIUNEA BAR - GUSTARI & BAUTURI ]");
+            attroff(COLOR_PAIR(3) | A_BOLD);
+
+            int latimeCasuta = 36; 
+            int spatiuIntre = 4;
+            int latimeTotala = (latimeCasuta * 2) + spatiuIntre; 
+            int xStartGrid = (COLS - latimeTotala) / 2;
+            if (xStartGrid < 0) xStartGrid = 0;
+
+            for(int r = 0; r < maxRanduriBar; r++) {
+                int randReal = offsetBar + r;
+                for(int c = 0; c < 2; c++) {
+                    int indexProdus = (randReal * 2) + c;
+                    if(indexProdus >= meniuBar.size()) break;
+
+                    char buffer[100];
+                    snprintf(buffer, sizeof(buffer), "%s: %.2f RON", meniuBar[indexProdus].nume.c_str(), meniuBar[indexProdus].pret);
+                    int xCurent = xStartGrid + (c * (latimeCasuta + spatiuIntre));
+                    deseneazaButonD(9 + (r * 4), xCurent, string(buffer), 2, latimeCasuta); 
+                }
+            }
+
+            int yControls = 9 + (maxRanduriBar * 4) + 1; 
+            int xControls = (COLS - 60) / 2; 
+            int totalRanduriNevoiase = (meniuBar.size() + 1) / 2;
+            int maxOffsetBar = totalRanduriNevoiase - maxRanduriBar;
+            if (maxOffsetBar < 0) maxOffsetBar = 0;
+
+            if (offsetBar > 0) { deseneazaButonD(yControls, xControls, "/\\ SUS /\\", 2, 16); }
+            deseneazaButonD(yControls, xControls + 20, "0. Inapoi", 4, 20);
+            if (offsetBar < maxOffsetBar) { deseneazaButonD(yControls, xControls + 44, "\\/ JOS \\/", 2, 16); }
         }
         else if (stareCurenta == PROMOTII) {
             afiseazaAntet(xLogo);
-            attron(COLOR_PAIR(3));
-            mvprintw(7, xLogo + 17, "[ PROMOTII ]");
-            attroff(COLOR_PAIR(3));
-            mvprintw(9, xLogo + 10, "1+1 Gratis la orice bilet martea!");
-            deseneazaButonD(19, xButon, "0. Inapoi la Meniu", 4, 28);
+            attron(COLOR_PAIR(3) | A_BOLD);
+            mvprintw(7, xLogo + 5, "[ SECTIUNEA OFERTE SI PROMOTII ]");
+            attroff(COLOR_PAIR(3) | A_BOLD);
+
+            // --- LOGICA PENTRU DESENARE CUPOANE ---
+            for(int i = 0; i < maxPromotiiPeEcran; i++) {
+                int indexReal = offsetPromotii + i;
+                if(indexReal >= listaPromotii.size()) break; 
+
+                // Alternam culorile cupoanelor: Unul Cyan(1), urmatorul Galben(2) pentru aspect premium
+                int culoareCupon = (i % 2 == 0) ? 1 : 2; 
+                
+                // Un cupon are 5 rânduri (y, y+1...y+4), deci lăsăm un spațiu de 6 rânduri între ele
+                deseneazaCasutaPromotie(9 + (i * 6), xCupon, 
+                                        listaPromotii[indexReal].titlu, 
+                                        listaPromotii[indexReal].descriere, 
+                                        culoareCupon, latimeCupon);
+            }
+
+            // --- CONTROALE SCROLL PROMOTII ---
+            int yControls = 9 + (maxPromotiiPeEcran * 6); 
+            int xControls = (COLS - 60) / 2; 
+
+            if (offsetPromotii > 0) { deseneazaButonD(yControls, xControls, "/\\ SUS /\\", 2, 16); }
+            deseneazaButonD(yControls, xControls + 20, "0. Inapoi", 4, 20);
+            if (offsetPromotii + maxPromotiiPeEcran < listaPromotii.size()) { deseneazaButonD(yControls, xControls + 44, "\\/ JOS \\/", 2, 16); }
         }
         
         refresh(); 
@@ -240,32 +400,45 @@ int main() {
         int actiune = getch();
         if (actiune == KEY_RESIZE) continue; 
         
+        // --- LOGICA SAGETI TASTATURA ---
         if (stareCurenta == BILETE) {
-            if (actiune == KEY_UP && offsetFilme > 0) {
-                offsetFilme--;
-                continue;
-            }
-            if (actiune == KEY_DOWN && offsetFilme + maxFilmePeEcran < programAzi.size()) {
-                offsetFilme++;
-                continue;
-            }
+            if (actiune == KEY_UP && offsetFilme > 0) { offsetFilme--; continue; }
+            if (actiune == KEY_DOWN && offsetFilme + maxFilmePeEcran < programAzi.size()) { offsetFilme++; continue; }
+        }
+        else if (stareCurenta == BAR) {
+            int totalRanduriNevoiase = (meniuBar.size() + 1) / 2;
+            int maxOffsetBar = totalRanduriNevoiase - maxRanduriBar;
+            if (maxOffsetBar < 0) maxOffsetBar = 0;
+            if (actiune == KEY_UP && offsetBar > 0) { offsetBar--; continue; }
+            if (actiune == KEY_DOWN && offsetBar < maxOffsetBar) { offsetBar++; continue; }
+        }
+        else if (stareCurenta == PROMOTII) {
+            if (actiune == KEY_UP && offsetPromotii > 0) { offsetPromotii--; continue; }
+            if (actiune == KEY_DOWN && offsetPromotii + maxPromotiiPeEcran < listaPromotii.size()) { offsetPromotii++; continue; }
         }
 
+        // --- LOGICA MOUSE ---
         if (actiune == KEY_MOUSE) {
             if (getmouse(&event) == OK) {
                 
-                // --- MAGIA PENTRU ROTITA DE MOUSE ---
+                // MOUSE WHEEL
                 if (stareCurenta == BILETE) {
-                    if ((event.bstate & BUTTON4_PRESSED) && offsetFilme > 0) {
-                        offsetFilme--; // Scroll UP
-                        continue;
-                    }
-                    if ((event.bstate & BUTTON5_PRESSED) && offsetFilme + maxFilmePeEcran < programAzi.size()) {
-                        offsetFilme++; // Scroll DOWN
-                        continue;
-                    }
+                    if ((event.bstate & BUTTON4_PRESSED) && offsetFilme > 0) { offsetFilme--; continue; }
+                    if ((event.bstate & BUTTON5_PRESSED) && offsetFilme + maxFilmePeEcran < programAzi.size()) { offsetFilme++; continue; }
+                }
+                else if (stareCurenta == BAR) {
+                    int totalRanduriNevoiase = (meniuBar.size() + 1) / 2;
+                    int maxOffsetBar = totalRanduriNevoiase - maxRanduriBar;
+                    if (maxOffsetBar < 0) maxOffsetBar = 0;
+                    if ((event.bstate & BUTTON4_PRESSED) && offsetBar > 0) { offsetBar--; continue; }
+                    if ((event.bstate & BUTTON5_PRESSED) && offsetBar < maxOffsetBar) { offsetBar++; continue; }
+                }
+                else if (stareCurenta == PROMOTII) {
+                    if ((event.bstate & BUTTON4_PRESSED) && offsetPromotii > 0) { offsetPromotii--; continue; }
+                    if ((event.bstate & BUTTON5_PRESSED) && offsetPromotii + maxPromotiiPeEcran < listaPromotii.size()) { offsetPromotii++; continue; }
                 }
 
+                // CLICK NORMAL
                 if (event.bstate & BUTTON1_PRESSED || event.bstate & BUTTON1_CLICKED) {
                     
                     if (stareCurenta == MENIU_PRINCIPAL) {
@@ -281,16 +454,9 @@ int main() {
                         int xControls = (COLS - 60) / 2;
                         
                         if (event.y >= yControls && event.y <= yControls + 2) {
-                            if (offsetFilme > 0 && event.x >= xControls && event.x <= xControls + 16) {
-                                offsetFilme--;
-                            }
-                            else if (event.x >= xControls + 20 && event.x <= xControls + 40) {
-                                stareCurenta = MENIU_PRINCIPAL;
-                                offsetFilme = 0; 
-                            }
-                            else if (offsetFilme + maxFilmePeEcran < programAzi.size() && event.x >= xControls + 44 && event.x <= xControls + 60) {
-                                offsetFilme++;
-                            }
+                            if (offsetFilme > 0 && event.x >= xControls && event.x <= xControls + 16) { offsetFilme--; }
+                            else if (event.x >= xControls + 20 && event.x <= xControls + 40) { stareCurenta = MENIU_PRINCIPAL; offsetFilme = 0; }
+                            else if (offsetFilme + maxFilmePeEcran < programAzi.size() && event.x >= xControls + 44 && event.x <= xControls + 60) { offsetFilme++; }
                         }
                         else {
                             for(int i = 0; i < maxFilmePeEcran; i++) {
@@ -307,7 +473,6 @@ int main() {
                     }
                     else if (stareCurenta == SELECTIE_LOCURI) {
                         int yButonInapoi = 8 + (programAzi[indexSelectat].getSala().getRanduri() * 2) + 2;
-                        
                         if (event.y >= yButonInapoi && event.y <= yButonInapoi + 2 && event.x >= xButon && event.x <= xButon + 27) {
                             stareCurenta = BILETE; 
                         }
@@ -325,9 +490,27 @@ int main() {
                             }
                         }
                     }
-                    else {
-                        if (event.y >= 19 && event.y <= 21 && event.x >= xButon && event.x <= xButon + 27) {
-                            stareCurenta = MENIU_PRINCIPAL; 
+                    else if (stareCurenta == BAR) {
+                        int yControls = 9 + (maxRanduriBar * 4) + 1;
+                        int xControls = (COLS - 60) / 2;
+                        int totalRanduriNevoiase = (meniuBar.size() + 1) / 2;
+                        int maxOffsetBar = totalRanduriNevoiase - maxRanduriBar;
+                        if (maxOffsetBar < 0) maxOffsetBar = 0;
+
+                        if (event.y >= yControls && event.y <= yControls + 2) {
+                            if (offsetBar > 0 && event.x >= xControls && event.x <= xControls + 16) { offsetBar--; }
+                            else if (event.x >= xControls + 20 && event.x <= xControls + 40) { stareCurenta = MENIU_PRINCIPAL; offsetBar = 0; }
+                            else if (offsetBar < maxOffsetBar && event.x >= xControls + 44 && event.x <= xControls + 60) { offsetBar++; }
+                        }
+                    }
+                    else if (stareCurenta == PROMOTII) {
+                        int yControls = 9 + (maxPromotiiPeEcran * 6);
+                        int xControls = (COLS - 60) / 2;
+
+                        if (event.y >= yControls && event.y <= yControls + 2) {
+                            if (offsetPromotii > 0 && event.x >= xControls && event.x <= xControls + 16) { offsetPromotii--; }
+                            else if (event.x >= xControls + 20 && event.x <= xControls + 40) { stareCurenta = MENIU_PRINCIPAL; offsetPromotii = 0; }
+                            else if (offsetPromotii + maxPromotiiPeEcran < listaPromotii.size() && event.x >= xControls + 44 && event.x <= xControls + 60) { offsetPromotii++; }
                         }
                     }
                 }
@@ -336,7 +519,7 @@ int main() {
         else if (actiune == '0') {
             if (stareCurenta == MENIU_PRINCIPAL) ruleaza = false;
             else if (stareCurenta == SELECTIE_LOCURI) stareCurenta = BILETE;
-            else stareCurenta = MENIU_PRINCIPAL;
+            else { stareCurenta = MENIU_PRINCIPAL; offsetFilme = 0; offsetBar = 0; offsetPromotii = 0; }
         }
     }
 
