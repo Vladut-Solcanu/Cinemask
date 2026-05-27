@@ -3,10 +3,10 @@
 #include <vector>
 #include <cstdlib>
 #include <cstdio> 
+#include <fstream>  
+#include <sstream>  
 #include <algorithm> 
-#include "Film.h" 
-#include "Sala.h" 
-#include "Proiectie.h" 
+#include <ctime> // Necesar pentru Happy Hour si verificari de calendar
 
 using namespace std;
 
@@ -29,6 +29,10 @@ struct ProdusCos {
     float pret;
     ProdusCos(string n, float p) : nume(n), pret(p) {}
 };
+
+#include "Film.h" 
+#include "Sala.h" 
+#include "Proiectie.h"
 
 // --- MASCA STANGA (Jason) ---
 void deseneazaMascaHorror(int y, int x, int culoare) {
@@ -143,9 +147,9 @@ void deseneazaCasutaPromotie(int y, int x, string titlu, string descriere, int c
 
 void deseneazaEcranCinema(int y, int x) {
     attron(COLOR_PAIR(1) | A_BOLD); 
-    mvprintw(y, x,     "+----------------------------------------------------------------------------------------------------+");
-    mvprintw(y + 1, x, "|                                             E C R A N                                              |");
-    mvprintw(y + 2, x, "+----------------------------------------------------------------------------------------------------+");
+    mvprintw(y, x,     "+------------------------------------------------+");
+    mvprintw(y + 1, x, "|                   E C R A N                    |");
+    mvprintw(y + 2, x, "+------------------------------------------------+");
     attroff(COLOR_PAIR(1) | A_BOLD);
 }
 
@@ -165,106 +169,130 @@ int main() {
 
     start_color();
     use_default_colors(); 
-    init_pair(1, COLOR_CYAN, -1);
-    init_pair(2, COLOR_YELLOW, -1);
-    init_pair(3, COLOR_GREEN, -1);
-    init_pair(4, COLOR_RED, -1);
-    init_pair(5, COLOR_WHITE, -1); 
+    init_pair(1, COLOR_CYAN, -1);     
+    init_pair(2, COLOR_YELLOW, -1);   
+    init_pair(3, COLOR_GREEN, -1);    
+    init_pair(4, COLOR_RED, -1);      
+    init_pair(5, COLOR_WHITE, -1);    
+    init_pair(6, COLOR_MAGENTA, -1);  
 
     mousemask(BUTTON1_PRESSED | BUTTON1_CLICKED | BUTTON4_PRESSED | BUTTON5_PRESSED, NULL);
     printf("\033[?1000h\n"); 
 
-    Sala salaIMAX("Sala IMAX", 8, 12);
-    Sala salaVIP("Sala VIP", 8, 12);
-    Sala salaStd1("Sala Standard 1", 8, 12);
-    Sala salaStd2("Sala Standard 2", 8, 12);
+    vector<Sala> complexCinema;
+    complexCinema.push_back(Sala("IMAX", "Sala IMAX", "sala_imax.txt"));
+    complexCinema.push_back(Sala("VIP",  "Sala VIP", "sala_vip.txt", true));
+    complexCinema.push_back(Sala("STD1", "Sala Standard 1", "sala_std1.txt"));
+    complexCinema.push_back(Sala("STD2", "Sala Standard 2", "sala_std2.txt"));
 
-    Film f1("Deadpool & Wolverine", 127, 30.00);
-    Film f2("Dune: Partea II", 166, 35.50);
-    Film f3("Oppenheimer", 180, 25.00);
-    Film f4("Joker: Folie a Deux", 138, 30.00);
-
+    // Citire Filme si Gen din fisier text
     vector<Proiectie> programAzi;
-    programAzi.push_back(Proiectie(f1, salaIMAX, "10:00"));
-    programAzi.push_back(Proiectie(f2, salaVIP, "10:15"));
-    programAzi.push_back(Proiectie(f3, salaStd1, "10:30"));
-    programAzi.push_back(Proiectie(f4, salaStd2, "10:45"));
-    programAzi.push_back(Proiectie(f4, salaIMAX, "13:00"));
-    programAzi.push_back(Proiectie(f1, salaVIP, "13:30"));
-    programAzi.push_back(Proiectie(f2, salaStd1, "14:00"));
-    programAzi.push_back(Proiectie(f3, salaStd2, "14:15"));
-    programAzi.push_back(Proiectie(f3, salaIMAX, "16:00"));
-    programAzi.push_back(Proiectie(f4, salaVIP, "16:30"));
-    programAzi.push_back(Proiectie(f1, salaStd1, "17:15"));
-    programAzi.push_back(Proiectie(f2, salaStd2, "18:00"));
-    programAzi.push_back(Proiectie(f2, salaIMAX, "20:00"));
-    programAzi.push_back(Proiectie(f3, salaVIP, "19:30")); 
-    programAzi.push_back(Proiectie(f4, salaStd1, "20:30"));
-    programAzi.push_back(Proiectie(f1, salaStd2, "21:30"));
+    ifstream fisierFilme("filme.txt");
+    if (fisierFilme.is_open()) {
+        string linie;
+        while (getline(fisierFilme, linie)) {
+            if (linie.empty()) continue;
+            stringstream ss(linie);
+            string t, tokenDurata, tokenPret, tokenPremiera, idSalaCautat, oraRulare, g;
+            
+            getline(ss, t, '|');
+            getline(ss, tokenDurata, '|');
+            getline(ss, tokenPret, '|');
+            getline(ss, tokenPremiera, '|');
+            getline(ss, idSalaCautat, '|'); 
+            getline(ss, oraRulare, '|');    
+            getline(ss, g, '|'); // NOU: Preluam si genul filmului
+            
+            int d = atoi(tokenDurata.c_str());
+            float p = atof(tokenPret.c_str());
+            bool premiera = (tokenPremiera == "1");
+            
+            Film filmNou(t, d, p, premiera, g);
+            
+            Sala salaAsignata = complexCinema[0]; 
+            for (auto s : complexCinema) {
+                if (s.getId() == idSalaCautat) {
+                    salaAsignata = s;
+                    break;
+                }
+            }
+            programAzi.push_back(Proiectie(filmNou, salaAsignata, oraRulare));
+        }
+        fisierFilme.close();
+    }
+    if (programAzi.empty()) {
+        programAzi.push_back(Proiectie(Film("Eroare", 120, 20.00, false, "Action"), complexCinema[0], "12:00"));
+    }
 
+    // Citire Produse Bar din fisier
     vector<ProdusBar> meniuBar;
-    meniuBar.push_back(ProdusBar("Apa Plata 0.5L", 8.00));
-    meniuBar.push_back(ProdusBar("Apa Minerala 0.5L", 8.50));
-    meniuBar.push_back(ProdusBar("Suc Cola/Fanta", 12.00));
-    meniuBar.push_back(ProdusBar("Lipton Ice Tea", 12.00));
-    meniuBar.push_back(ProdusBar("Popcorn Mic", 15.00));
-    meniuBar.push_back(ProdusBar("Popcorn Mare", 22.00));
-    meniuBar.push_back(ProdusBar("Portie Nachos", 20.00));
-    meniuBar.push_back(ProdusBar("Combo: Pop Mic+Suc", 24.00));
-    meniuBar.push_back(ProdusBar("Combo: Pop Mare+Suc", 30.00));
-    meniuBar.push_back(ProdusBar("Combo: Nachos+Suc", 29.00));
+    ifstream fisierBar("bar.txt");
+    if (fisierBar.is_open()) {
+        string linie;
+        while (getline(fisierBar, linie)) {
+            if (linie.empty()) continue;
+            stringstream ss(linie);
+            string numeProdus, tokenPretBar;
+            getline(ss, numeProdus, '|');
+            getline(ss, tokenPretBar, '|');
+            meniuBar.push_back(ProdusBar(numeProdus, atof(tokenPretBar.c_str())));
+        }
+        fisierBar.close();
+    }
+    // NOU: Ne asiguram ca Pachetul Familiei este inclus in meniul barului ca si Combo
+    bool arePachetFamilie = false;
+    for(auto prod : meniuBar) {
+        if(prod.nume.find("PACHETUL FAMILIEI") != string::npos) arePachetFamilie = true;
+    }
+    if(!arePachetFamilie) {
+        meniuBar.push_back(ProdusBar("Combo: PACHETUL FAMILIEI", 160.00));
+    }
 
+    // Citire Promotii
     vector<Promotie> listaPromotii;
-    listaPromotii.push_back(Promotie("MARTEA FILMULUI", "1+1 Gratis la orice bilet cumparat in zilele de marti."));
-    listaPromotii.push_back(Promotie("REDUCERE ELEVI", "Reducere 20% la orice film pe baza carnetului vizat."));
-    listaPromotii.push_back(Promotie("PACHETUL FAMILIEI", "4 Bilete + 2 Popcorn Mare + 4 Sucuri = 160 RON!"));
+    ifstream fisierPromotii("promotii.txt");
+    if (fisierPromotii.is_open()) {
+        string linie;
+        while (getline(fisierPromotii, linie)) {
+            if (linie.empty()) continue;
+            stringstream ss(linie);
+            string titluPromotie, descrierePromotie;
+            getline(ss, titluPromotie, '|');
+            getline(ss, descrierePromotie, '|');
+            listaPromotii.push_back(Promotie(titluPromotie, descrierePromotie));
+        }
+        fisierPromotii.close();
+    }
 
     bool ruleaza = true;
     MEVENT event; 
     StareAplicatie stareCurenta = MENIU_PRINCIPAL;
     StareAplicatie stareAnterioara = MENIU_PRINCIPAL; 
-    
     int indexSelectat = -1; 
     
     int offsetFilme = 0, maxFilmePeEcran = 3; 
     int offsetBar = 0, maxRanduriBar = 3; 
     int offsetPromotii = 0, maxPromotiiPeEcran = 2; 
-    int offsetCos = 0, maxCosPeEcran = 5; // L-am redus usor ca sa incapa noile butoane jos
+    int offsetCos = 0, maxCosPeEcran = 5; 
 
     vector<ProdusCos> cos;
     vector<pair<int, int>> locuriSelectateCurent;
 
     while (ruleaza) {
-        int xLogo = (COLS - 49) / 2;
-        if (xLogo < 0) xLogo = 0; 
-        
-        int xButon = (COLS - 28) / 2;
-        if (xButon < 0) xButon = 0;
-
-        int latimeSala = 102;
-        int xSalaCentrat = (COLS - latimeSala) / 2;
-        if (xSalaCentrat < 0) xSalaCentrat = 0;
-        
-        int latimeButonFilm = 66; 
-        int xButonFilm = (COLS - latimeButonFilm) / 2;
-
-        int latimeCupon = 70; 
-        int xCupon = (COLS - latimeCupon) / 2;
+        int xLogo = (COLS - 49) / 2; if (xLogo < 0) xLogo = 0; 
+        int xButon = (COLS - 28) / 2; if (xButon < 0) xButon = 0;
+        int latimeButonFilm = 74; int xButonFilm = (COLS - latimeButonFilm) / 2;
+        int latimeCupon = 70; int xCupon = (COLS - latimeCupon) / 2;
 
         clear();
         
-        // Desenare Buton COS in coltul dreapta
         if (stareCurenta != COS) {
             float totalCos = 0.0;
             for(auto p : cos) totalCos += p.pret;
-            
             char bufferCos[50];
             snprintf(bufferCos, sizeof(bufferCos), "COS [%d] - %.2f RON", (int)cos.size(), totalCos);
-            
             int xCosBtn = COLS - 32;
-            if (xCosBtn > 0) {
-                deseneazaButonD(1, xCosBtn, string(bufferCos), 2, 30);
-            }
+            if (xCosBtn > 0) deseneazaButonD(1, xCosBtn, string(bufferCos), 2, 30);
         }
 
         if (stareCurenta == MENIU_PRINCIPAL) {
@@ -295,61 +323,85 @@ int main() {
             for(int i = 0; i < maxFilmePeEcran; i++) {
                 int indexReal = offsetFilme + i;
                 if(indexReal >= programAzi.size()) break; 
+                string tagPremiera = programAzi[indexReal].getFilm().getEstePremiera() ? " [PREMIERA]" : "";
+                string tagVIP = programAzi[indexReal].getSala().getEsteVIP() ? " [VIP]" : "";
+                
+                // Pretul se calculeaza dinamic (arata 10 lei daca e vineri sau 0 lei daca e vineri 13 horror)
+                float pretCalculatDinamice = programAzi[indexReal].getPretLoc(0); 
 
-                char buffer[100];
-                snprintf(buffer, sizeof(buffer), "[%s] %s | %s - %.2f RON", 
+                int culoareButon = 3; 
+                if (programAzi[indexReal].getSala().getEsteVIP()) culoareButon = 2; 
+                else if (programAzi[indexReal].getFilm().getEstePremiera()) culoareButon = 6; 
+
+                char buffer[120];
+                snprintf(buffer, sizeof(buffer), "[%s] %s%s%s | %s - %.2f RON", 
                          programAzi[indexReal].getOra().c_str(),
                          programAzi[indexReal].getFilm().getTitlu().c_str(), 
-                         programAzi[indexReal].getSala().getNume().c_str(),
-                         programAzi[indexReal].getFilm().getPret());
+                         tagVIP.c_str(), tagPremiera.c_str(),
+                         programAzi[indexReal].getSala().getNume().c_str(), pretCalculatDinamice);
                 
-                deseneazaButonD(9 + (i * 4), xButonFilm, string(buffer), 1, latimeButonFilm);
+                deseneazaButonD(9 + (i * 4), xButonFilm, string(buffer), culoareButon, latimeButonFilm);
             }
-            int yControls = 21;
-            int xControls = (COLS - 60) / 2; 
+            int yControls = 21; int xControls = (COLS - 60) / 2; 
             if (offsetFilme > 0) { deseneazaButonD(yControls, xControls, "/\\ SUS /\\", 2, 16); }
             deseneazaButonD(yControls, xControls + 20, "0. Inapoi", 4, 20);
             if (offsetFilme + maxFilmePeEcran < programAzi.size()) { deseneazaButonD(yControls, xControls + 44, "\\/ JOS \\/", 2, 16); }
         }
         else if (stareCurenta == SELECTIE_LOCURI && indexSelectat != -1) {
-            deseneazaEcranCinema(2, xSalaCentrat);
+            int latimeTotalaSalaCaractere = programAzi[indexSelectat].getSala().getLocuriPeRand() * 6;
+            int xSalaCentratDinamice = (COLS - latimeTotalaSalaCaractere) / 2;
+            if (xSalaCentratDinamice < 0) xSalaCentratDinamice = 0;
+            deseneazaEcranCinema(2, (COLS - 50) / 2);
             
             attron(COLOR_PAIR(2) | A_BOLD);
-            string detalii = "Film: " + programAzi[indexSelectat].getFilm().getTitlu() + 
-                             " | Ora: " + programAzi[indexSelectat].getOra();
+            string detalii = "Film: " + programAzi[indexSelectat].getFilm().getTitlu() + " (" + programAzi[indexSelectat].getFilm().getGen() + ") | " + programAzi[indexSelectat].getSala().getNume();
             mvprintw(6, (COLS - detalii.length()) / 2, "%s", detalii.c_str());
             attroff(COLOR_PAIR(2) | A_BOLD);
 
             int startY = 8; 
             for (int i = 0; i < programAzi[indexSelectat].getSala().getRanduri(); i++) {
-                mvprintw(startY + (i * 2), xSalaCentrat - 10, "Rand %d", i + 1); 
+                float pretRandCurent = programAzi[indexSelectat].getPretLoc(i);
+                int culoareLocuriLibere = 3; 
+                
+                if (programAzi[indexSelectat].getSala().getEsteVIP()) {
+                    culoareLocuriLibere = 2; 
+                }
+                else if (programAzi[indexSelectat].getFilm().getEstePremiera()) {
+                    // Preluam data curenta a sistemului si pentru colorare
+                    time_t t = time(0); tm* acum = localtime(&t);
+                    if (acum->tm_wday != 5) { // Daca NU e vineri, aratam cele 3 zone de pret standard
+                        if (i < 5) culoareLocuriLibere = 3;       
+                        else if (i < 8) culoareLocuriLibere = 1;  
+                        else culoareLocuriLibere = 6;             
+                    }
+                }
 
+                attron(COLOR_PAIR(culoareLocuriLibere));
+                mvprintw(startY + (i * 2), xSalaCentratDinamice - 22, "R%2d (%.0f RON)", i + 1, pretRandCurent); 
+                attroff(COLOR_PAIR(culoareLocuriLibere));
+
+                int scaunRealContor = 1; 
                 for (int j = 0; j < programAzi[indexSelectat].getSala().getLocuriPeRand(); j++) {
-                    int offsetCuloar = (j >= 6) ? 6 : 0; 
-                    int posX = xSalaCentrat + (j * 8) + offsetCuloar;
-
+                    int posX = xSalaCentratDinamice + (j * 6);
+                    char celula = programAzi[indexSelectat].getSala().getTipCelulă(i, j);
+                    if (celula == '.') continue;
                     if (!programAzi[indexSelectat].esteLiber(i, j)) {
-                        attron(COLOR_PAIR(4) | A_BOLD); 
-                        mvprintw(startY + (i * 2), posX, "[ XX ]"); 
-                        attroff(COLOR_PAIR(4) | A_BOLD);
+                        attron(COLOR_PAIR(4) | A_BOLD); mvprintw(startY + (i * 2), posX, "[ XX ]"); attroff(COLOR_PAIR(4) | A_BOLD);
+                        scaunRealContor++;
                     } 
                     else if (esteLocSelectat(i, j, locuriSelectateCurent)) {
-                        attron(COLOR_PAIR(5) | A_DIM); 
-                        mvprintw(startY + (i * 2), posX, "[ SS ]"); 
-                        attroff(COLOR_PAIR(5) | A_DIM);
+                        attron(COLOR_PAIR(5) | A_DIM); mvprintw(startY + (i * 2), posX, "[ SS ]"); attroff(COLOR_PAIR(5) | A_DIM);
+                        scaunRealContor++;
                     }
                     else {
-                        attron(COLOR_PAIR(3)); 
-                        mvprintw(startY + (i * 2), posX, "[ %02d ]", j + 1); 
-                        attroff(COLOR_PAIR(3));
+                        attron(COLOR_PAIR(culoareLocuriLibere)); mvprintw(startY + (i * 2), posX, "[ %02d ]", scaunRealContor); attroff(COLOR_PAIR(culoareLocuriLibere));
+                        scaunRealContor++;
                     }
                 }
             }
             int yButoane = startY + (programAzi[indexSelectat].getSala().getRanduri() * 2) + 2;
-            deseneazaButonD(yButoane, xButon - 16, "0. Inapoi la Filme", 4, 28);
-            if (!locuriSelectateCurent.empty()) {
-                deseneazaButonD(yButoane, xButon + 16, "-> ADAUGA IN COS <-", 3, 28);
-            }
+            deseneazaButonD(yButoane + 1, xButon - 16, "0. Inapoi la Filme", 4, 28);
+            if (!locuriSelectateCurent.empty()) { deseneazaButonD(yButoane + 1, xButon + 16, "-> ADAUGA IN COS <-", 3, 28); }
         }
         else if (stareCurenta == BAR) {
             afiseazaAntet(xLogo);
@@ -357,11 +409,16 @@ int main() {
             mvprintw(7, xLogo + 6, "[ SECTIUNEA BAR - GUSTARI & BAUTURI ]");
             attroff(COLOR_PAIR(3) | A_BOLD);
 
-            int latimeCasuta = 36; 
-            int spatiuIntre = 4;
-            int latimeTotala = (latimeCasuta * 2) + spatiuIntre; 
-            int xStartGrid = (COLS - latimeTotala) / 2;
-            if (xStartGrid < 0) xStartGrid = 0;
+            int latimeCasuta = 36; int spatiuIntre = 4;
+            int xStartGrid = (COLS - ((latimeCasuta * 2) + spatiuIntre)) / 2;
+
+            // Preluam ceasul real pentru logica Happy Hour
+            time_t t = time(0);
+            tm* acum = localtime(&t);
+            int ziuaSaptamanii = acum->tm_wday; // 6 = Sambata
+            int oraCurenta = acum->tm_hour;     // Ora curenta (0-23)
+
+            bool esteHappyHourNachos = (ziuaSaptamanii == 6 && oraCurenta >= 14 && oraCurenta < 17);
 
             for(int r = 0; r < maxRanduriBar; r++) {
                 int randReal = offsetBar + r;
@@ -369,19 +426,32 @@ int main() {
                     int indexProdus = (randReal * 2) + c;
                     if(indexProdus >= meniuBar.size()) break;
 
+                    int culoareProdus = 1; 
+                    string numeP = meniuBar[indexProdus].nume;
+                    float pretFinalProdus = meniuBar[indexProdus].pret;
+
+                    // --- NOU: Logica de pret Happy Hour pentru Nachos ---
+                    if (numeP.find("Nachos") != string::npos && ! (numeP.find("Combo") != string::npos)) {
+                        if (esteHappyHourNachos) {
+                            pretFinalProdus = pretFinalProdus * 0.50; // Reducere 50%
+                            numeP += " [HAPPY HOUR 50%]";
+                        }
+                    }
+
+                    if (numeP.find("Combo") != string::npos) {
+                        culoareProdus = 2; 
+                    } else if (numeP.find("Popcorn") != string::npos || numeP.find("Nachos") != string::npos) {
+                        culoareProdus = 3; 
+                    }
+
                     char buffer[100];
-                    snprintf(buffer, sizeof(buffer), "%s: %.2f RON", meniuBar[indexProdus].nume.c_str(), meniuBar[indexProdus].pret);
+                    snprintf(buffer, sizeof(buffer), "%s: %.2f RON", numeP.c_str(), pretFinalProdus);
                     int xCurent = xStartGrid + (c * (latimeCasuta + spatiuIntre));
-                    deseneazaButonD(9 + (r * 4), xCurent, string(buffer), 2, latimeCasuta); 
+                    deseneazaButonD(9 + (r * 4), xCurent, string(buffer), culoareProdus, latimeCasuta); 
                 }
             }
-
-            int yControls = 9 + (maxRanduriBar * 4) + 1; 
-            int xControls = (COLS - 60) / 2; 
-            int totalRanduriNevoiase = (meniuBar.size() + 1) / 2;
-            int maxOffsetBar = totalRanduriNevoiase - maxRanduriBar;
-            if (maxOffsetBar < 0) maxOffsetBar = 0;
-
+            int yControls = 9 + (maxRanduriBar * 4) + 1; int xControls = (COLS - 60) / 2; 
+            int maxOffsetBar = ((meniuBar.size() + 1) / 2) - maxRanduriBar;
             if (offsetBar > 0) { deseneazaButonD(yControls, xControls, "/\\ SUS /\\", 2, 16); }
             deseneazaButonD(yControls, xControls + 20, "0. Inapoi", 4, 20);
             if (offsetBar < maxOffsetBar) { deseneazaButonD(yControls, xControls + 44, "\\/ JOS \\/", 2, 16); }
@@ -391,20 +461,13 @@ int main() {
             attron(COLOR_PAIR(3) | A_BOLD);
             mvprintw(7, xLogo + 5, "[ SECTIUNEA OFERTE SI PROMOTII ]");
             attroff(COLOR_PAIR(3) | A_BOLD);
-
             for(int i = 0; i < maxPromotiiPeEcran; i++) {
                 int indexReal = offsetPromotii + i;
                 if(indexReal >= listaPromotii.size()) break; 
-
                 int culoareCupon = (i % 2 == 0) ? 1 : 2; 
-                deseneazaCasutaPromotie(9 + (i * 6), xCupon, 
-                                        listaPromotii[indexReal].titlu, 
-                                        listaPromotii[indexReal].descriere, 
-                                        culoareCupon, latimeCupon);
+                deseneazaCasutaPromotie(9 + (i * 6), xCupon, listaPromotii[indexReal].titlu, listaPromotii[indexReal].descriere, culoareCupon, latimeCupon);
             }
-
-            int yControls = 9 + (maxPromotiiPeEcran * 6); 
-            int xControls = (COLS - 60) / 2; 
+            int yControls = 9 + (maxPromotiiPeEcran * 6); int xControls = (COLS - 60) / 2; 
             if (offsetPromotii > 0) { deseneazaButonD(yControls, xControls, "/\\ SUS /\\", 2, 16); }
             deseneazaButonD(yControls, xControls + 20, "0. Inapoi", 4, 20);
             if (offsetPromotii + maxPromotiiPeEcran < listaPromotii.size()) { deseneazaButonD(yControls, xControls + 44, "\\/ JOS \\/", 2, 16); }
@@ -421,69 +484,53 @@ int main() {
                 for(int i = 0; i < maxCosPeEcran; i++) {
                     int indexReal = offsetCos + i;
                     if(indexReal >= cos.size()) break; 
-
                     char buffer[100];
                     snprintf(buffer, sizeof(buffer), "%d. %-35s | %.2f RON", indexReal + 1, cos[indexReal].nume.c_str(), cos[indexReal].pret);
                     deseneazaButonD(9 + (i * 4), xButonFilm, string(buffer), 1, latimeButonFilm);
-                    
-                    // --- NOU: Butonul [ X ] de stergere individuala (Rosu) ---
                     attron(COLOR_PAIR(4) | A_BOLD); 
                     mvprintw(10 + (i * 4), xButonFilm + latimeButonFilm + 2, "[ X ]");
                     attroff(COLOR_PAIR(4) | A_BOLD);
                 }
             }
-
-            int yControls = 9 + (maxCosPeEcran * 4); 
-            int xControls = (COLS - 60) / 2; 
-            int maxOffsetCos = cos.size() - maxCosPeEcran;
-            if (maxOffsetCos < 0) maxOffsetCos = 0;
-
+            int yControls = 9 + (maxCosPeEcran * 4); int xControls = (COLS - 60) / 2; 
+            int maxOffsetCos = cos.size() - maxCosPeEcran; if (maxOffsetCos < 0) maxOffsetCos = 0;
             if (offsetCos > 0) { deseneazaButonD(yControls, xControls, "/\\ SUS /\\", 2, 16); }
             deseneazaButonD(yControls, xControls + 20, "<- Inapoi", 4, 20);
             if (offsetCos < maxOffsetCos) { deseneazaButonD(yControls, xControls + 44, "\\/ JOS \\/", 2, 16); }
-
             if (!cos.empty()) {
-                // --- NOU: Cele doua butoane mari jos (Sterge tot / Finalizeaza) ---
                 deseneazaButonD(yControls + 4, xButon - 16, "Sterge Tot", 4, 28);
                 deseneazaButonD(yControls + 4, xButon + 16, "Finalizeaza Comanda", 3, 28);
             }
         }
         
         refresh(); 
-
         int actiune = getch();
         if (actiune == KEY_RESIZE) continue; 
         
         if (actiune == KEY_MOUSE) {
             if (getmouse(&event) == OK) {
-                
-                // MOUSE WHEEL
+                // SCROLL
                 if (stareCurenta == BILETE) {
                     if ((event.bstate & BUTTON4_PRESSED) && offsetFilme > 0) { offsetFilme--; continue; }
                     if ((event.bstate & BUTTON5_PRESSED) && offsetFilme + maxFilmePeEcran < programAzi.size()) { offsetFilme++; continue; }
                 }
                 else if (stareCurenta == BAR) {
                     int maxOffsetBar = ((meniuBar.size() + 1) / 2) - maxRanduriBar;
-                    if (maxOffsetBar < 0) maxOffsetBar = 0;
                     if ((event.bstate & BUTTON4_PRESSED) && offsetBar > 0) { offsetBar--; continue; }
                     if ((event.bstate & BUTTON5_PRESSED) && offsetBar < maxOffsetBar) { offsetBar++; continue; }
                 }
                 else if (stareCurenta == COS) {
                     int maxOffsetCos = cos.size() - maxCosPeEcran;
-                    if (maxOffsetCos < 0) maxOffsetCos = 0;
                     if ((event.bstate & BUTTON4_PRESSED) && offsetCos > 0) { offsetCos--; continue; }
                     if ((event.bstate & BUTTON5_PRESSED) && offsetCos < maxOffsetCos) { offsetCos++; continue; }
                 }
 
-                // CLICK NORMAL
+                // CLICK
                 if (event.bstate & BUTTON1_PRESSED || event.bstate & BUTTON1_CLICKED) {
-                    
                     if (stareCurenta != COS) {
                         int xCosBtn = COLS - 32;
                         if (event.y >= 1 && event.y <= 3 && event.x >= xCosBtn && event.x <= xCosBtn + 30) {
-                            stareAnterioara = stareCurenta; 
-                            stareCurenta = COS;
-                            continue;
+                            stareAnterioara = stareCurenta; stareCurenta = COS; continue;
                         }
                     }
 
@@ -496,8 +543,7 @@ int main() {
                         }
                     }
                     else if (stareCurenta == BILETE) {
-                        int yControls = 21;
-                        int xControls = (COLS - 60) / 2;
+                        int yControls = 21; int xControls = (COLS - 60) / 2;
                         if (event.y >= yControls && event.y <= yControls + 2) {
                             if (offsetFilme > 0 && event.x >= xControls && event.x <= xControls + 16) { offsetFilme--; }
                             else if (event.x >= xControls + 20 && event.x <= xControls + 40) { stareCurenta = MENIU_PRINCIPAL; offsetFilme = 0; }
@@ -507,51 +553,43 @@ int main() {
                             for(int i = 0; i < maxFilmePeEcran; i++) {
                                 int indexReal = offsetFilme + i;
                                 if(indexReal >= programAzi.size()) break;
-                                
                                 int yFilm = 9 + (i * 4);
                                 if (event.y >= yFilm && event.y <= yFilm + 2 && event.x >= xButonFilm && event.x <= xButonFilm + latimeButonFilm) {
-                                    indexSelectat = indexReal;
-                                    locuriSelectateCurent.clear(); 
-                                    stareCurenta = SELECTIE_LOCURI; 
+                                    indexSelectat = indexReal; locuriSelectateCurent.clear(); stareCurenta = SELECTIE_LOCURI; 
                                 }
                             }
                         }
                     }
                     else if (stareCurenta == SELECTIE_LOCURI) {
-                        int startY = 8;
-                        int yButoane = startY + (programAzi[indexSelectat].getSala().getRanduri() * 2) + 2;
-                        
+                        int startY = 8; int yButoane = startY + (programAzi[indexSelectat].getSala().getRanduri() * 2) + 3;
                         if (event.y >= yButoane && event.y <= yButoane + 2 && event.x >= xButon - 16 && event.x <= xButon - 16 + 27) {
-                            stareCurenta = BILETE; 
-                            locuriSelectateCurent.clear(); 
+                            stareCurenta = BILETE; locuriSelectateCurent.clear(); 
                         }
                         else if (!locuriSelectateCurent.empty() && event.y >= yButoane && event.y <= yButoane + 2 && event.x >= xButon + 16 && event.x <= xButon + 16 + 27) {
                             for (auto loc : locuriSelectateCurent) {
                                 programAzi[indexSelectat].rezervaLoc(loc.first, loc.second);
-                                string numeBilet = "Bilet: " + programAzi[indexSelectat].getFilm().getTitlu() + " (R" + to_string(loc.first+1) + " L" + to_string(loc.second+1) + ")";
-                                cos.push_back(ProdusCos(numeBilet, programAzi[indexSelectat].getFilm().getPret()));
+                                float pretBiletDinamice = programAzi[indexSelectat].getPretLoc(loc.first);
+                                string biletText = "Bilet: " + programAzi[indexSelectat].getFilm().getTitlu() + " (R" + to_string(loc.first+1) + " L" + to_string(loc.second+1) + ")";
+                                cos.push_back(ProdusCos(biletText, pretBiletDinamice));
                             }
                             locuriSelectateCurent.clear(); 
                         }
                         else {
+                            int latimeTotalaSalaCaractere = programAzi[indexSelectat].getSala().getLocuriPeRand() * 6;
+                            int xSalaCentratDinamice = (COLS - latimeTotalaSalaCaractere) / 2;
+                            if (xSalaCentratDinamice < 0) xSalaCentratDinamice = 0;
                             for (int i = 0; i < programAzi[indexSelectat].getSala().getRanduri(); i++) {
                                 for (int j = 0; j < programAzi[indexSelectat].getSala().getLocuriPeRand(); j++) {
-                                    int offsetCuloar = (j >= 6) ? 6 : 0;
-                                    int posX = xSalaCentrat + (j * 8) + offsetCuloar;
-                                    
+                                    int posX = xSalaCentratDinamice + (j * 6);
                                     if (event.y == startY + (i * 2) && event.x >= posX && event.x <= posX + 5) {
                                         if (programAzi[indexSelectat].esteLiber(i, j)) {
                                             bool gasit = false;
-                                            for(int k=0; k < locuriSelectateCurent.size(); k++) {
+                                            for(size_t k=0; k < locuriSelectateCurent.size(); k++) {
                                                 if(locuriSelectateCurent[k].first == i && locuriSelectateCurent[k].second == j) {
-                                                    locuriSelectateCurent.erase(locuriSelectateCurent.begin() + k);
-                                                    gasit = true;
-                                                    break;
+                                                    locuriSelectateCurent.erase(locuriSelectateCurent.begin() + k); gasit = true; break;
                                                 }
                                             }
-                                            if(!gasit) {
-                                                locuriSelectateCurent.push_back({i, j});
-                                            }
+                                            if(!gasit) locuriSelectateCurent.push_back({i, j});
                                         }
                                     }
                                 }
@@ -559,15 +597,10 @@ int main() {
                         }
                     }
                     else if (stareCurenta == BAR) {
-                        int latimeCasuta = 36; 
-                        int spatiuIntre = 4;
-                        int latimeTotala = (latimeCasuta * 2) + spatiuIntre; 
-                        int xStartGrid = (COLS - latimeTotala) / 2;
-
-                        int yControls = 9 + (maxRanduriBar * 4) + 1;
-                        int xControls = (COLS - 60) / 2;
+                        int latimeCasuta = 36; int spatiuIntre = 4;
+                        int xStartGrid = (COLS - ((latimeCasuta * 2) + spatiuIntre)) / 2;
+                        int yControls = 9 + (maxRanduriBar * 4) + 1; int xControls = (COLS - 60) / 2;
                         int maxOffsetBar = ((meniuBar.size() + 1) / 2) - maxRanduriBar;
-                        if (maxOffsetBar < 0) maxOffsetBar = 0;
 
                         if (event.y >= yControls && event.y <= yControls + 2) {
                             if (offsetBar > 0 && event.x >= xControls && event.x <= xControls + 16) { offsetBar--; }
@@ -575,56 +608,51 @@ int main() {
                             else if (offsetBar < maxOffsetBar && event.x >= xControls + 44 && event.x <= xControls + 60) { offsetBar++; }
                         }
                         else {
+                            // Preluam ceasul real pentru click
+                            time_t t = time(0); tm* acum = localtime(&t);
+                            bool esteHappyHourNachos = (acum->tm_wday == 6 && acum->tm_hour >= 14 && acum->tm_hour < 17);
+
                             for(int r = 0; r < maxRanduriBar; r++) {
                                 int randReal = offsetBar + r;
-                                for(int c = 0; c < 2; c++) {
+                                 for(int c = 0; c < 2; c++) {
                                     int indexProdus = (randReal * 2) + c;
                                     if(indexProdus >= meniuBar.size()) break;
-
                                     int xCurent = xStartGrid + (c * (latimeCasuta + spatiuIntre));
                                     int yProdus = 9 + (r * 4);
-                                    
                                     if (event.y >= yProdus && event.y <= yProdus + 2 && event.x >= xCurent && event.x <= xCurent + latimeCasuta) {
                                         
-                                        // --- NOU: Feedback vizual de apasare (Butonul se face gri) ---
-                                        char buffer[100];
-                                        snprintf(buffer, sizeof(buffer), "%s: %.2f RON", meniuBar[indexProdus].nume.c_str(), meniuBar[indexProdus].pret);
-                                        deseneazaButonD(yProdus, xCurent, string(buffer), 5, latimeCasuta); // 5 = Culoarea Gri
-                                        refresh(); // Fortam consola sa arate butonul gri
-                                        napms(100); // Adormim programul fix o zecime de secunda (ca sa se vada apasarea)
+                                        string numeP = meniuBar[indexProdus].nume;
+                                        float pretAdaugat = meniuBar[indexProdus].pret;
                                         
-                                        cos.push_back(ProdusCos(meniuBar[indexProdus].nume, meniuBar[indexProdus].pret));
+                                        // Aplicam reducerea si la calculul final cand se adauga in cos
+                                        if (numeP.find("Nachos") != string::npos && !(numeP.find("Combo") != string::npos)) {
+                                            if (esteHappyHourNachos) {
+                                                pretAdaugat = pretAdaugat * 0.50;
+                                                numeP += " (Promo 50%)";
+                                            }
+                                        }
+
+                                        char buffer[100];
+                                        snprintf(buffer, sizeof(buffer), "%s: %.2f RON", numeP.c_str(), pretAdaugat);
+                                        deseneazaButonD(yProdus, xCurent, string(buffer), 5, latimeCasuta); 
+                                        refresh(); napms(100); 
+                                        
+                                        cos.push_back(ProdusCos(numeP, pretAdaugat));
                                     }
                                 }
                             }
                         }
                     }
                     else if (stareCurenta == COS) {
-                        int yControls = 9 + (maxCosPeEcran * 4); 
-                        int xControls = (COLS - 60) / 2; 
-
-                        if (event.y >= yControls && event.y <= yControls + 2 && event.x >= xControls + 20 && event.x <= xControls + 40) { 
-                            stareCurenta = stareAnterioara; 
-                        }
-                        else if (!cos.empty() && event.y >= yControls + 4 && event.y <= yControls + 6 && event.x >= xButon - 16 && event.x <= xButon - 16 + 27) {
-                            // --- NOU: Click pe Sterge Tot ---
-                            cos.clear(); 
-                            offsetCos = 0;
-                        }
-                        else if (!cos.empty() && event.y >= yControls + 4 && event.y <= yControls + 6 && event.x >= xButon + 16 && event.x <= xButon + 16 + 27) {
-                            // --- Click pe Finalizeaza Comanda ---
-                            cos.clear(); 
-                            stareCurenta = MENIU_PRINCIPAL; 
-                        }
+                        int yControls = 9 + (maxCosPeEcran * 4); int xControls = (COLS - 60) / 2; 
+                        if (event.y >= yControls && event.y <= yControls + 2 && event.x >= xControls + 20 && event.x <= xControls + 40) { stareCurenta = stareAnterioara; }
+                        else if (!cos.empty() && event.y >= yControls + 4 && event.y <= yControls + 6 && event.x >= xButon - 16 && event.x <= xButon - 16 + 27) { cos.clear(); offsetCos = 0; }
+                        else if (!cos.empty() && event.y >= yControls + 4 && event.y <= yControls + 6 && event.x >= xButon + 16 && event.x <= xButon + 16 + 27) { cos.clear(); stareCurenta = MENIU_PRINCIPAL; }
                         else {
-                            // --- NOU: Click pe [ X ] individual ---
                             for(int i = 0; i < maxCosPeEcran; i++) {
-                                int indexReal = offsetCos + i;
-                                if(indexReal >= cos.size()) break;
-                                
+                                int indexReal = offsetCos + i; if(indexReal >= cos.size()) break;
                                 if (event.y == 10 + (i * 4) && event.x >= xButonFilm + latimeButonFilm + 2 && event.x <= xButonFilm + latimeButonFilm + 6) {
                                     cos.erase(cos.begin() + indexReal);
-                                    // Daca stergem ultimul element si pagina e acum goala, dam un pas in sus la scroll
                                     if (offsetCos > 0 && offsetCos >= cos.size()) offsetCos--;
                                     break; 
                                 }
@@ -632,18 +660,24 @@ int main() {
                         }
                     }
                     else if (stareCurenta == PROMOTII) {
-                        int yControls = 9 + (maxPromotiiPeEcran * 6);
-                        int xControls = (COLS - 60) / 2;
-                        if (event.y >= yControls && event.y <= yControls + 2 && event.x >= xControls + 20 && event.x <= xControls + 40) { 
-                            stareCurenta = MENIU_PRINCIPAL; 
+                        int yControls = 9 + (maxPromotiiPeEcran * 6); int xControls = (COLS - 60) / 2;
+                        int maxOffsetPromotii = listaPromotii.size() - maxPromotiiPeEcran;
+                        if (event.y >= yControls && event.y <= yControls + 2) {
+                            if (offsetPromotii > 0 && event.x >= xControls && event.x <= xControls + 16) { offsetPromotii--; }
+                            else if (event.x >= xControls + 20 && event.x <= xControls + 40) { stareCurenta = MENIU_PRINCIPAL; offsetPromotii = 0; }
+                            else if (offsetPromotii < maxOffsetPromotii && event.x >= xControls + 44 && event.x <= xControls + 60) { offsetPromotii++; }
                         }
                     }
                 }
             }
         }
+        else if (actiune == '0') {
+            if (stareCurenta == MENIU_PRINCIPAL) ruleaza = false;
+            else if (stareCurenta == SELECTIE_LOCURI) stareCurenta = BILETE;
+            else { stareCurenta = MENIU_PRINCIPAL; offsetFilme = 0; offsetBar = 0; offsetPromotii = 0; offsetCos = 0; }
+        }
     }
-
     endwin();              
-    printf("\033[?1000l\n"); 
+    printf("\033?1000l\n"); 
     return 0;
 }

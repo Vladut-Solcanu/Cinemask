@@ -1,0 +1,10 @@
+Apa Plata 0.5L|8.00
+Apa Minerala 0.5L|8.50
+Suc Cola/Fanta|12.00
+Lipton Ice Tea|12.00
+Popcorn Mic|15.00
+Popcorn Mare|22.00
+Portie Nachos|20.00
+Combo: Pop Mic+Suc|24.00
+Combo: Pop Mare+Suc|30.00
+Combo: Nachos+Suc|29.00

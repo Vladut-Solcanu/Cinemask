@@ -1,0 +1,12 @@
+Deadpool & Wolverine|127|30.00|1|IMAX|10:00|Action
+Oppenheimer|180|25.00|0|VIP|10:15|Biography
+Joker: Folie a Deux|138|30.00|0|STD1|10:30|Horror
+Oppenheimer|180|25.00|0|STD2|10:45|Biography
+Dune: Partea II|166|35.50|1|IMAX|13:00|Sci-Fi
+Oppenheimer|180|25.00|0|STD1|13:30|Biography
+Joker: Folie a Deux|138|30.00|0|VIP|14:00|Horror
+Joker: Folie a Deux|138|30.00|0|STD2|14:30|Horror
+Deadpool & Wolverine|127|30.00|1|IMAX|16:30|Action
+Oppenheimer|180|25.00|0|VIP|17:00|Biography
+Joker: Folie a Deux|138|30.00|0|STD1|17:15|Horror
+Dune: Partea II|166|35.50|1|IMAX|19:30|Sci-Fi

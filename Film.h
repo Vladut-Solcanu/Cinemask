@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include <string>
 
 using namespace std;
@@ -6,17 +6,25 @@ using namespace std;
 class Film {
 private:
     string titlu;
-    int durataMinute;
-    double pretBilet;
+    int durata;
+    float pretBaza;
+    bool estePremiera;
+    string gen; // NOU: Genul filmului (ex: Horror)
 
 public:
-    Film(string t, int d, double p) {
+    Film() : titlu(""), durata(0), pretBaza(0.0), estePremiera(false), gen("") {}
+
+    Film(string t, int d, float p, bool premiera, string g) {
         titlu = t;
-        durataMinute = d;
-        pretBilet = p;
+        durata = d;
+        pretBaza = p;
+        estePremiera = premiera;
+        gen = g;
     }
 
-    string getTitlu() { return titlu; }
-    int getDurata() { return durataMinute; }
-    double getPret() { return pretBilet; }
+    string getTitlu() const { return titlu; }
+    int getDurata() const { return durata; }
+    float getPretBaza() const { return pretBaza; }
+    bool getEstePremiera() const { return estePremiera; }
+    string getGen() const { return gen; } // NOU: Getter pentru gen
 };
