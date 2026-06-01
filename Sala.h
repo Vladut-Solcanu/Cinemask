@@ -7,7 +7,7 @@ using namespace std;
 
 class Sala {
 private:
-    string idSala; // NOU: ID-ul unic pentru fisierul text
+    string idSala; 
     string numeSala;
     int randuri;
     int locuriPeRand;
@@ -17,7 +17,6 @@ private:
 public:
     Sala() : idSala(""), numeSala(""), randuri(0), locuriPeRand(0), esteVIP(false) {} 
 
-    // NOU: Am adaugat parametrul 'id' la inceput
     Sala(string id, string nume, string caleFisier, bool vip = false) {
         idSala = id;
         numeSala = nume;

@@ -9,7 +9,7 @@ private:
     int durata;
     float pretBaza;
     bool estePremiera;
-    string gen; // NOU: Genul filmului (ex: Horror)
+    string gen; // NOU: Genul filmului
 
 public:
     Film() : titlu(""), durata(0), pretBaza(0.0), estePremiera(false), gen("") {}

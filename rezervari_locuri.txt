@@ -1,0 +1,6 @@
+Inception|13:19|Sala IMAX|2|8
+Inception|13:19|Sala IMAX|2|9
+Inception|13:19|Sala IMAX|2|10
+The Dark Knight|16:17|Sala IMAX|6|8
+The Dark Knight|16:17|Sala IMAX|6|9
+The Dark Knight|12:58|Sala VIP|6|7

@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <ctime> // NOU: Pentru timp si data
+#include <ctime> // Necesar pentru timp
 #include "Film.h"
 #include "Sala.h"
 
@@ -25,30 +25,28 @@ public:
     string getOra() { return oraStart; }
 
     float getPretLoc(int rand) {
-        // Preluam data curenta a sistemului
         time_t t = time(0);
         tm* acum = localtime(&t);
         
-        int ziuaSaptamanii = acum->tm_wday; // 5 = Vineri
-        int ziuaLunii = acum->tm_mday;       // Ziua din calendar
+        int ziuaSaptamanii = acum->tm_wday; 
+        int ziuaLunii = acum->tm_mday;       
 
-        // REGULA EXTRA: Prima Vineri 13 din an -> Toate filmele Horror sunt GRATIS (0 RON)
-        // (Nota: Pentru a fi "prima" din an, verificam doar luna Ianuarie/tm_mon == 0, sau lasam pe orice vineri 13)
+        // 1. Promotie Vineri 13 Horror
         if (ziuaSaptamanii == 5 && ziuaLunii == 13 && filmulRulat.getGen() == "Horror") {
             return 0.00; 
         }
 
-        // Regula Suprema anterioara: Daca e in Sala VIP, costa fix 100 RON orice scaun (VIP-ul nu are reduceri standard)
+        // 2. Pret fix VIP
         if (salaAsignata.getEsteVIP()) {
             return 100.00;
         }
 
-        // REGULA NOUĂ: Daca este Vineri, in salile Standard si IMAX biletul devine fix 10 RON!
-        if (ziuaSaptamanii == 5 && (salaAsignata.getId() == "IMAX" || salaAsignata.getId() == "STD1" || salaAsignata.getId() == "STD2")) {
+        // 3. Promotie Generala Vineri in restul salilor
+        if (ziuaSaptamanii == 5 && (salaAsignata.getId() == "IMAX" || salaAsignata.getId().find("STD") != string::npos)) {
             return 10.00;
         }
 
-        // Daca nu e vineri, se aplica regulile tale clasice de pret de baza si premiere
+        // 4. Calcul standard in functie de zone si premiera
         float pretFinal = filmulRulat.getPretBaza();
         if (filmulRulat.getEstePremiera()) {
             if (rand < 5) pretFinal += 0.00; 
@@ -65,11 +63,16 @@ public:
         return false; 
     }
 
-    bool rezervaLoc(int rand, int loc) {
+    void rezervaLoc(int rand, int loc) {
         if (esteLiber(rand, loc)) {
             scauneOcupate[rand][loc] = true;
-            return true;
         }
-        return false;
+    }
+
+    // NOU: Pentru cand golim cosul sau stergem un bilet
+    void elibereazaLoc(int rand, int loc) {
+        if (rand >= 0 && rand < salaAsignata.getRanduri() && loc >= 0 && loc < salaAsignata.getLocuriPeRand()) {
+            scauneOcupate[rand][loc] = false;
+        }
     }
 };

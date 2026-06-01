@@ -1,0 +1,6 @@
+Inception                 | 13:19 | IMAX         | Action     | 29/05/2026 | 10 RON
+Inception                 | 13:19 | IMAX         | Action     | 29/05/2026 | 10 RON
+Inception                 | 13:19 | IMAX         | Action     | 29/05/2026 | 10 RON
+The Dark Knight           | 16:17 | IMAX         | Action     | 29/05/2026 | 10 RON
+The Dark Knight           | 16:17 | IMAX         | Action     | 29/05/2026 | 10 RON
+The Dark Knight           | 12:58 | VIP          | Action     | 29/05/2026 | 100 RON

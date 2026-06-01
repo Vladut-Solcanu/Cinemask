@@ -6,11 +6,13 @@
 #include <fstream>  
 #include <sstream>  
 #include <algorithm> 
-#include <ctime> // Necesar pentru Happy Hour si verificari de calendar
+#include <ctime> 
+#include <map>
 
 using namespace std;
 
-enum StareAplicatie { MENIU_PRINCIPAL, BILETE, SELECTIE_LOCURI, BAR, PROMOTII, COS };
+// NOU: Am adaugat starea AVERTISMENT_INTARZIERE
+enum StareAplicatie { MENIU_PRINCIPAL, BILETE, SELECTIE_LOCURI, BAR, PROMOTII, COS, ADMIN_LOGIN, ADMIN_MENIU, ADMIN_BILETE, ADMIN_BAR, AVERTISMENT_INTARZIERE };
 
 struct ProdusBar {
     string nume;
@@ -25,9 +27,17 @@ struct Promotie {
 };
 
 struct ProdusCos {
-    string nume;
+    int tip; 
+    string nume; 
+    string logAdmin; 
     float pret;
-    ProdusCos(string n, float p) : nume(n), pret(p) {}
+    
+    int indexProiectie;
+    int randScaun;
+    int locScaun;
+
+    ProdusCos(int t, string n, string l, float p, int idx = -1, int r = -1, int c = -1) 
+        : tip(t), nume(n), logAdmin(l), pret(p), indexProiectie(idx), randScaun(r), locScaun(c) {}
 };
 
 #include "Film.h" 
@@ -185,46 +195,105 @@ int main() {
     complexCinema.push_back(Sala("STD1", "Sala Standard 1", "sala_std1.txt"));
     complexCinema.push_back(Sala("STD2", "Sala Standard 2", "sala_std2.txt"));
 
-    // Citire Filme si Gen din fisier text
-    vector<Proiectie> programAzi;
+    vector<Film> catalogFilme;
     ifstream fisierFilme("filme.txt");
     if (fisierFilme.is_open()) {
         string linie;
         while (getline(fisierFilme, linie)) {
             if (linie.empty()) continue;
             stringstream ss(linie);
-            string t, tokenDurata, tokenPret, tokenPremiera, idSalaCautat, oraRulare, g;
+            string t, tokenDurata, tokenPret, tokenPremiera, g;
             
             getline(ss, t, '|');
             getline(ss, tokenDurata, '|');
             getline(ss, tokenPret, '|');
             getline(ss, tokenPremiera, '|');
-            getline(ss, idSalaCautat, '|'); 
-            getline(ss, oraRulare, '|');    
-            getline(ss, g, '|'); // NOU: Preluam si genul filmului
+            getline(ss, g, '|'); 
+            
+            g.erase(remove(g.begin(), g.end(), '\r'), g.end()); 
             
             int d = atoi(tokenDurata.c_str());
             float p = atof(tokenPret.c_str());
             bool premiera = (tokenPremiera == "1");
             
-            Film filmNou(t, d, p, premiera, g);
-            
-            Sala salaAsignata = complexCinema[0]; 
-            for (auto s : complexCinema) {
-                if (s.getId() == idSalaCautat) {
-                    salaAsignata = s;
-                    break;
-                }
-            }
-            programAzi.push_back(Proiectie(filmNou, salaAsignata, oraRulare));
+            catalogFilme.push_back(Film(t, d, p, premiera, g));
         }
         fisierFilme.close();
     }
-    if (programAzi.empty()) {
-        programAzi.push_back(Proiectie(Film("Eroare", 120, 20.00, false, "Action"), complexCinema[0], "12:00"));
+    if (catalogFilme.empty()) {
+        catalogFilme.push_back(Film("Eroare Baza de Date", 120, 20.00, false, "Action"));
     }
 
-    // Citire Produse Bar din fisier
+    vector<Proiectie> programAzi;
+    time_t t_prog = time(0);
+    tm* acum_prog = localtime(&t_prog);
+    int ziuaCurenta = acum_prog->tm_wday; 
+
+    ifstream fisierProgram("program.txt");
+    if (fisierProgram.is_open()) {
+        string linie;
+        while (getline(fisierProgram, linie)) {
+            if (linie.empty()) continue;
+            stringstream ss(linie);
+            string ziStr, titluProg, oraProg, idSalaProg;
+            
+            getline(ss, ziStr, '|');
+            getline(ss, titluProg, '|');
+            getline(ss, oraProg, '|');
+            getline(ss, idSalaProg, '|');
+            idSalaProg.erase(remove(idSalaProg.begin(), idSalaProg.end(), '\r'), idSalaProg.end());
+
+            if (atoi(ziStr.c_str()) == ziuaCurenta) {
+                Film filmGasit = catalogFilme[0]; 
+                for (auto& f : catalogFilme) {
+                    if (f.getTitlu() == titluProg) {
+                        filmGasit = f;
+                        break;
+                    }
+                }
+                Sala salaGasita = complexCinema[0]; 
+                for (auto& s : complexCinema) {
+                    if (s.getId() == idSalaProg) {
+                        salaGasita = s;
+                        break;
+                    }
+                }
+                programAzi.push_back(Proiectie(filmGasit, salaGasita, oraProg));
+            }
+        }
+        fisierProgram.close();
+    }
+    if (programAzi.empty()) {
+        programAzi.push_back(Proiectie(catalogFilme[0], complexCinema[0], "12:00"));
+    }
+
+    ifstream fisierLocuri("rezervari_locuri.txt");
+    if (fisierLocuri.is_open()) {
+        string linie;
+        while (getline(fisierLocuri, linie)) {
+            if (linie.empty()) continue;
+            stringstream ss(linie);
+            string tFilm, oraFilM, numeS, randStr, locStr;
+            
+            getline(ss, tFilm, '|');
+            getline(ss, oraFilM, '|');
+            getline(ss, numeS, '|');
+            getline(ss, randStr, '|');
+            getline(ss, locStr, '|');
+            
+            int randTrecut = atoi(randStr.c_str());
+            int locTrecut = atoi(locStr.c_str());
+            
+            for (auto& pr : programAzi) {
+                if (pr.getFilm().getTitlu() == tFilm && pr.getOra() == oraFilM && pr.getSala().getNume() == numeS) {
+                    pr.rezervaLoc(randTrecut, locTrecut); 
+                    break;
+                }
+            }
+        }
+        fisierLocuri.close();
+    }
+
     vector<ProdusBar> meniuBar;
     ifstream fisierBar("bar.txt");
     if (fisierBar.is_open()) {
@@ -239,16 +308,8 @@ int main() {
         }
         fisierBar.close();
     }
-    // NOU: Ne asiguram ca Pachetul Familiei este inclus in meniul barului ca si Combo
-    bool arePachetFamilie = false;
-    for(auto prod : meniuBar) {
-        if(prod.nume.find("PACHETUL FAMILIEI") != string::npos) arePachetFamilie = true;
-    }
-    if(!arePachetFamilie) {
-        meniuBar.push_back(ProdusBar("Combo: PACHETUL FAMILIEI", 160.00));
-    }
+    
 
-    // Citire Promotii
     vector<Promotie> listaPromotii;
     ifstream fisierPromotii("promotii.txt");
     if (fisierPromotii.is_open()) {
@@ -269,16 +330,43 @@ int main() {
     StareAplicatie stareCurenta = MENIU_PRINCIPAL;
     StareAplicatie stareAnterioara = MENIU_PRINCIPAL; 
     int indexSelectat = -1; 
+    int indexInAsteptare = -1; // NOU: Folosit pentru a retine filmul pe care l-ai clickat daca intarzie
     
     int offsetFilme = 0, maxFilmePeEcran = 3; 
     int offsetBar = 0, maxRanduriBar = 3; 
     int offsetPromotii = 0, maxPromotiiPeEcran = 2; 
     int offsetCos = 0, maxCosPeEcran = 5; 
+    int offsetAdmin = 0, maxAdminPeEcran = 6; 
 
     vector<ProdusCos> cos;
     vector<pair<int, int>> locuriSelectateCurent;
-
+    vector<string> istoricVanzari; 
+    string parolaIntrodusa = ""; 
+    bool eroareParola = false;
     while (ruleaza) {
+        
+        // --- MOTORUL DE TIMP: ELIMINAM FILMELE CARE AU PESTE 30 MIN ---
+        time_t t_now = time(0);
+        tm* acum_now = localtime(&t_now);
+        int timpCurentMin = acum_now->tm_hour * 60 + acum_now->tm_min;
+
+        for (auto it = programAzi.begin(); it != programAzi.end(); ) {
+            int hFilm = atoi(it->getOra().substr(0, 2).c_str());
+            int mFilm = atoi(it->getOra().substr(3, 2).c_str());
+            int timpFilmMin = hFilm * 60 + mFilm;
+            
+            if (timpCurentMin - timpFilmMin > 30) {
+                it = programAzi.erase(it);
+            } else {
+                ++it;
+            }
+        }
+        // Ajustam offset-ul daca cumva a sters filme si am ramas in gol
+        if (offsetFilme >= programAzi.size() && offsetFilme > 0) {
+            offsetFilme = 0; 
+        }
+
+        // --- CALCUL COORDONATE ECRAN ---
         int xLogo = (COLS - 49) / 2; if (xLogo < 0) xLogo = 0; 
         int xButon = (COLS - 28) / 2; if (xButon < 0) xButon = 0;
         int latimeButonFilm = 74; int xButonFilm = (COLS - latimeButonFilm) / 2;
@@ -296,6 +384,10 @@ int main() {
         }
 
         if (stareCurenta == MENIU_PRINCIPAL) {
+            deseneazaButonD(1, 2, "ADMINISTRATOR", 4, 19);
+        }
+
+        if (stareCurenta == MENIU_PRINCIPAL) {
             afiseazaAntet(xLogo);
             if (xButon >= 34 && (xButon + 28 + 40) < COLS) {
                 deseneazaMascaHorror(6, xButon - 34, 4); 
@@ -309,6 +401,91 @@ int main() {
             attron(COLOR_PAIR(1));
             mvprintw(23, xLogo + 6, "-> Alege o optiune folosind mouse-ul");
             attroff(COLOR_PAIR(1));
+        }
+        else if (stareCurenta == ADMIN_LOGIN) {
+            afiseazaAntet(xLogo);
+            attron(COLOR_PAIR(4) | A_BOLD);
+            mvprintw(7, xLogo + 9, "[ AUTENTIFICARE ADMINISTRATOR ]");
+            attroff(COLOR_PAIR(4) | A_BOLD);
+
+            mvprintw(10, (COLS - 22) / 2, "Introduceti parola:");
+            
+            int boxX = (COLS - 20) / 2;
+            mvprintw(12, boxX - 2, "[                    ]");
+            
+            string masca(parolaIntrodusa.length(), '*');
+            attron(COLOR_PAIR(3) | A_BOLD);
+            mvprintw(12, boxX, "%s", masca.c_str());
+            attroff(COLOR_PAIR(3) | A_BOLD);
+
+            if (eroareParola) {
+                attron(COLOR_PAIR(4) | A_BOLD);
+                mvprintw(14, (COLS - 17) / 2, "Parola incorecta!");
+                attroff(COLOR_PAIR(4) | A_BOLD);
+            }
+
+            deseneazaButonD(16, xButon - 5, "AUTENTIFICARE", 3, 18);
+            deseneazaButonD(16, xButon + 15, "INAPOI", 4, 18);
+            
+            attron(COLOR_PAIR(1));
+            mvprintw(20, (COLS - 38) / 2, "(Foloseste tastatura, apoi click/Enter)");
+            attroff(COLOR_PAIR(1));
+        }
+        else if (stareCurenta == ADMIN_MENIU) { 
+            afiseazaAntet(xLogo);
+            attron(COLOR_PAIR(4) | A_BOLD);
+            mvprintw(7, xLogo + 13, "[ PANOU DE GESTIUNE ]");
+            attroff(COLOR_PAIR(4) | A_BOLD);
+
+            deseneazaButonD(11, xButon, "1. Vanzari Bilete", 3, 28);
+            deseneazaButonD(15, xButon, "2. Vanzari Snack Bar", 3, 28);
+            deseneazaButonD(19, xButon, "0. Inapoi la Public", 4, 28);
+        }
+        else if (stareCurenta == ADMIN_BILETE || stareCurenta == ADMIN_BAR) { 
+            afiseazaAntet(xLogo);
+            attron(COLOR_PAIR(4) | A_BOLD);
+            if (stareCurenta == ADMIN_BILETE) mvprintw(7, xLogo + 5, "[ TABEL VANZARI BILETE CUMPARATE ]");
+            else mvprintw(7, xLogo + 5, "[ TABEL VANZARI BAUTURI & SNACKS ]");
+            attroff(COLOR_PAIR(4) | A_BOLD);
+
+            int startY = 9;
+            attron(COLOR_PAIR(2));
+            attron(COLOR_PAIR(2));
+            if (stareCurenta == ADMIN_BILETE) {
+                mvprintw(startY, 4, "FILM                         | ORA     | SALA         | DATA         | BILETE VANDUTE | INCASARI TOTALE");
+            } else {
+                mvprintw(startY, 4, "PRODUS BAR SAU PROMOTIE                              | PRET PLATIT");
+            }
+            mvprintw(startY+1, 4, "-----------------------------------------------------------------------------------------------------");
+            attroff(COLOR_PAIR(2));
+
+            for(int i = 0; i < maxAdminPeEcran; i++) {
+                int indexReal = offsetAdmin + i;
+                if(indexReal >= istoricVanzari.size()) break;
+                mvprintw(startY + 3 + (i * 2), 4, "%d. %s", indexReal + 1, istoricVanzari[indexReal].c_str());
+            }
+
+            int yControls = startY + 3 + (maxAdminPeEcran * 2);
+            int xControls = (COLS - 60) / 2;
+            int maxOffsetAdmin = istoricVanzari.size() - maxAdminPeEcran; if (maxOffsetAdmin < 0) maxOffsetAdmin = 0;
+            if (offsetAdmin > 0) { deseneazaButonD(yControls, xControls, "/\\ SUS /\\", 2, 16); }
+            deseneazaButonD(yControls, xControls + 20, "0. Inapoi", 4, 20);
+            if (offsetAdmin < maxOffsetAdmin) { deseneazaButonD(yControls, xControls + 44, "\\/ JOS \\/", 2, 16); }
+        }
+        else if (stareCurenta == AVERTISMENT_INTARZIERE && indexInAsteptare != -1) {
+            // --- NOU: ECRANUL DE AVERTIZARE DACA FILMUL A INCEPUT DEJA ---
+            afiseazaAntet(xLogo);
+            
+            attron(COLOR_PAIR(4) | A_BOLD);
+            mvprintw(8, (COLS - 33) / 2, "!!! AVERTISMENT INTARZIERE !!!");
+            attroff(COLOR_PAIR(4) | A_BOLD);
+            
+            string mesaj = "Filmul " + programAzi[indexInAsteptare].getFilm().getTitlu() + " a inceput deja de la " + programAzi[indexInAsteptare].getOra() + "!";
+            mvprintw(10, (COLS - mesaj.length()) / 2, "%s", mesaj.c_str());
+            mvprintw(11, (COLS - 50) / 2, "Sunteti sigur ca doriti sa achizitionati bilete?");
+            
+            deseneazaButonD(14, xButon - 5, "DA, CONTINUA", 3, 18);
+            deseneazaButonD(14, xButon + 15, "IESI", 4, 18);
         }
         else if (stareCurenta == BILETE) {
             afiseazaAntet(xLogo);
@@ -326,11 +503,19 @@ int main() {
                 string tagPremiera = programAzi[indexReal].getFilm().getEstePremiera() ? " [PREMIERA]" : "";
                 string tagVIP = programAzi[indexReal].getSala().getEsteVIP() ? " [VIP]" : "";
                 
-                // Pretul se calculeaza dinamic (arata 10 lei daca e vineri sau 0 lei daca e vineri 13 horror)
                 float pretCalculatDinamice = programAzi[indexReal].getPretLoc(0); 
 
+                // --- NOU: LOGICA CULOARE IN FUNCTIE DE TIMP ---
+                int hFilm = atoi(programAzi[indexReal].getOra().substr(0, 2).c_str());
+                int mFilm = atoi(programAzi[indexReal].getOra().substr(3, 2).c_str());
+                int timpFilmMin = hFilm * 60 + mFilm;
+                int diferentaTimp = timpCurentMin - timpFilmMin;
+
                 int culoareButon = 3; 
-                if (programAzi[indexReal].getSala().getEsteVIP()) culoareButon = 2; 
+                if (diferentaTimp >= 0 && diferentaTimp <= 30) {
+                    culoareButon = 4; // Face butonul ROSU daca ruleaza deja
+                } 
+                else if (programAzi[indexReal].getSala().getEsteVIP()) culoareButon = 2; 
                 else if (programAzi[indexReal].getFilm().getEstePremiera()) culoareButon = 6; 
 
                 char buffer[120];
@@ -367,9 +552,8 @@ int main() {
                     culoareLocuriLibere = 2; 
                 }
                 else if (programAzi[indexSelectat].getFilm().getEstePremiera()) {
-                    // Preluam data curenta a sistemului si pentru colorare
-                    time_t t = time(0); tm* acum = localtime(&t);
-                    if (acum->tm_wday != 5) { // Daca NU e vineri, aratam cele 3 zone de pret standard
+                    time_t t_nowL = time(0); tm* acumL = localtime(&t_nowL);
+                    if (acumL->tm_wday != 5) { 
                         if (i < 5) culoareLocuriLibere = 3;       
                         else if (i < 8) culoareLocuriLibere = 1;  
                         else culoareLocuriLibere = 6;             
@@ -412,11 +596,10 @@ int main() {
             int latimeCasuta = 36; int spatiuIntre = 4;
             int xStartGrid = (COLS - ((latimeCasuta * 2) + spatiuIntre)) / 2;
 
-            // Preluam ceasul real pentru logica Happy Hour
-            time_t t = time(0);
-            tm* acum = localtime(&t);
-            int ziuaSaptamanii = acum->tm_wday; // 6 = Sambata
-            int oraCurenta = acum->tm_hour;     // Ora curenta (0-23)
+            time_t t_bar = time(0);
+            tm* acum_bar = localtime(&t_bar);
+            int ziuaSaptamanii = acum_bar->tm_wday; 
+            int oraCurenta = acum_bar->tm_hour;     
 
             bool esteHappyHourNachos = (ziuaSaptamanii == 6 && oraCurenta >= 14 && oraCurenta < 17);
 
@@ -430,10 +613,9 @@ int main() {
                     string numeP = meniuBar[indexProdus].nume;
                     float pretFinalProdus = meniuBar[indexProdus].pret;
 
-                    // --- NOU: Logica de pret Happy Hour pentru Nachos ---
                     if (numeP.find("Nachos") != string::npos && ! (numeP.find("Combo") != string::npos)) {
                         if (esteHappyHourNachos) {
-                            pretFinalProdus = pretFinalProdus * 0.50; // Reducere 50%
+                            pretFinalProdus = pretFinalProdus * 0.50; 
                             numeP += " [HAPPY HOUR 50%]";
                         }
                     }
@@ -484,7 +666,7 @@ int main() {
                 for(int i = 0; i < maxCosPeEcran; i++) {
                     int indexReal = offsetCos + i;
                     if(indexReal >= cos.size()) break; 
-                    char buffer[100];
+                    char buffer[120];
                     snprintf(buffer, sizeof(buffer), "%d. %-35s | %.2f RON", indexReal + 1, cos[indexReal].nume.c_str(), cos[indexReal].pret);
                     deseneazaButonD(9 + (i * 4), xButonFilm, string(buffer), 1, latimeButonFilm);
                     attron(COLOR_PAIR(4) | A_BOLD); 
@@ -507,9 +689,42 @@ int main() {
         int actiune = getch();
         if (actiune == KEY_RESIZE) continue; 
         
+        if (stareCurenta == ADMIN_LOGIN) {
+            if (actiune == '\n' || actiune == 10 || actiune == KEY_ENTER) {
+                // Citim parola din fisier
+                string parolaSalvata = "cinema2026"; // Fallback daca se sterge fisierul
+                ifstream fPassIn("parola.txt");
+                if (fPassIn.is_open()) {
+                    getline(fPassIn, parolaSalvata);
+                    fPassIn.close();
+                } else {
+                    ofstream fPassOut("parola.txt");
+                    fPassOut << parolaSalvata;
+                    fPassOut.close();
+                }
+
+                if (parolaIntrodusa == parolaSalvata) {
+                    stareCurenta = ADMIN_MENIU;
+                    parolaIntrodusa = "";
+                } else {
+                    eroareParola = true;
+                    parolaIntrodusa = "";
+                }
+                continue;
+            } else if (actiune == KEY_BACKSPACE || actiune == 127 || actiune == '\b') {
+                if (!parolaIntrodusa.empty()) parolaIntrodusa.pop_back(); // Stergem o litera
+                continue;
+            } else if (actiune >= 32 && actiune <= 126 && actiune != KEY_MOUSE && actiune != KEY_RESIZE) {
+                if (parolaIntrodusa.length() < 18) {
+                    parolaIntrodusa += (char)actiune; // Adaugam litera la parola
+                }
+                continue;
+            }
+        }
+
         if (actiune == KEY_MOUSE) {
             if (getmouse(&event) == OK) {
-                // SCROLL
+                // SROLLING
                 if (stareCurenta == BILETE) {
                     if ((event.bstate & BUTTON4_PRESSED) && offsetFilme > 0) { offsetFilme--; continue; }
                     if ((event.bstate & BUTTON5_PRESSED) && offsetFilme + maxFilmePeEcran < programAzi.size()) { offsetFilme++; continue; }
@@ -524,8 +739,18 @@ int main() {
                     if ((event.bstate & BUTTON4_PRESSED) && offsetCos > 0) { offsetCos--; continue; }
                     if ((event.bstate & BUTTON5_PRESSED) && offsetCos < maxOffsetCos) { offsetCos++; continue; }
                 }
+                else if (stareCurenta == PROMOTII) {
+                    int maxOffsetPromotii = listaPromotii.size() - maxPromotiiPeEcran;
+                    if ((event.bstate & BUTTON4_PRESSED) && offsetPromotii > 0) { offsetPromotii--; continue; }
+                    if ((event.bstate & BUTTON5_PRESSED) && offsetPromotii < maxOffsetPromotii) { offsetPromotii++; continue; }
+                }
+                else if (stareCurenta == ADMIN_BILETE || stareCurenta == ADMIN_BAR) { 
+                    int maxOffsetAdmin = istoricVanzari.size() - maxAdminPeEcran;
+                    if ((event.bstate & BUTTON4_PRESSED) && offsetAdmin > 0) { offsetAdmin--; continue; }
+                    if ((event.bstate & BUTTON5_PRESSED) && offsetAdmin < maxOffsetAdmin) { offsetAdmin++; continue; }
+                }
 
-                // CLICK
+                // CLICKING
                 if (event.bstate & BUTTON1_PRESSED || event.bstate & BUTTON1_CLICKED) {
                     if (stareCurenta != COS) {
                         int xCosBtn = COLS - 32;
@@ -535,11 +760,139 @@ int main() {
                     }
 
                     if (stareCurenta == MENIU_PRINCIPAL) {
+                        if (event.y >= 1 && event.y <= 3 && event.x >= 2 && event.x <= 20) {
+                            parolaIntrodusa = ""; // Resetam casuta
+                            eroareParola = false;
+                            stareCurenta = ADMIN_LOGIN; // Trimitem spre Login!
+                            continue;
+                        }
+                        
                         if (event.x >= xButon && event.x <= xButon + 27) {
                             if (event.y >= 7 && event.y <= 9) stareCurenta = BILETE;
                             else if (event.y >= 11 && event.y <= 13) stareCurenta = BAR;
                             else if (event.y >= 15 && event.y <= 17) stareCurenta = PROMOTII;
                             else if (event.y >= 19 && event.y <= 21) ruleaza = false;
+                        }
+                    }
+                    else if (stareCurenta == ADMIN_LOGIN) {
+                        if (event.y >= 16 && event.y <= 18) {
+                            if (event.x >= xButon - 5 && event.x <= xButon - 5 + 18) { // Buton AUTENTIFICARE
+                                string parolaSalvata = "cinema2026";
+                                ifstream fPassIn("parola.txt");
+                                if (fPassIn.is_open()) {
+                                    getline(fPassIn, parolaSalvata);
+                                    fPassIn.close();
+                                } else {
+                                    ofstream fPassOut("parola.txt");
+                                    fPassOut << parolaSalvata;
+                                    fPassOut.close();
+                                }
+
+                                if (parolaIntrodusa == parolaSalvata) {
+                                    stareCurenta = ADMIN_MENIU;
+                                    parolaIntrodusa = "";
+                                } else {
+                                    eroareParola = true;
+                                    parolaIntrodusa = "";
+                                }
+                            } 
+                            else if (event.x >= xButon + 15 && event.x <= xButon + 15 + 18) { // Buton INAPOI
+                                stareCurenta = MENIU_PRINCIPAL;
+                            }
+                        }
+                    }
+
+                    else if (stareCurenta == ADMIN_MENIU) { 
+                        if (event.x >= xButon && event.x <= xButon + 27) {
+                            
+                            // --- INCEPUT COD INLOCUIT (Butonul Vanzari Bilete) ---
+                            if (event.y >= 11 && event.y <= 13) {
+                                istoricVanzari.clear();
+                                ifstream fb("vanzari_bilete.txt"); 
+                                string linie;
+                                
+                                map<string, int> contorBilete;
+                                map<string, float> incasariBilete;
+
+                                while(getline(fb, linie)) {
+                                    if(!linie.empty()) {
+                                        stringstream ss(linie);
+                                        string t, ora, sala, gen, dataCumpararii, pretStr;
+                                        
+                                        // Asteptam cele 6 piese salvate
+                                        if(getline(ss, t, '|') && getline(ss, ora, '|') && 
+                                           getline(ss, sala, '|') && getline(ss, gen, '|') && 
+                                           getline(ss, dataCumpararii, '|') && getline(ss, pretStr, '|')) {
+                                            
+                                            // NOU: Introducem si sala in cheia de grupare
+                                            string cheie = t + "|" + ora + "|" + sala + "|" + dataCumpararii;
+                                            
+                                            contorBilete[cheie]++; 
+                                            incasariBilete[cheie] += atof(pretStr.c_str()); 
+                                        }
+                                    }
+                                }
+                                fb.close();
+
+                                for (auto const& pereche : contorBilete) {
+                                    string cheie = pereche.first;
+                                    stringstream ss(cheie);
+                                    string titluS, oraS, salaS, dataS;
+                                    
+                                    // Spargem cheia inapoi in 4 componente
+                                    getline(ss, titluS, '|'); 
+                                    getline(ss, oraS, '|'); 
+                                    getline(ss, salaS, '|'); 
+                                    getline(ss, dataS, '|');
+                                    
+                                    char buf[200];
+                                    // NOU: Am integrat %-12.12s pentru coloana Salii
+                                    snprintf(buf, sizeof(buf), "%-25.25s | %-5s | %-12.12s | %-10s | %-14s | %.2f RON", 
+                                             titluS.c_str(), oraS.c_str(), salaS.c_str(), dataS.c_str(),
+                                             ("Bilete: " + to_string(pereche.second)).c_str(), 
+                                             incasariBilete[cheie]);
+                                    
+                                    istoricVanzari.push_back(string(buf));
+                                }
+
+                                offsetAdmin = 0; stareCurenta = ADMIN_BILETE;
+                            }
+                            // --- SFARSIT COD INLOCUIT ---
+
+                            else if (event.y >= 15 && event.y <= 17) {
+                                istoricVanzari.clear();
+                                ifstream fbar("vanzari_bar.txt"); string linie;
+                                while(getline(fbar, linie)) if(!linie.empty()) istoricVanzari.push_back(linie);
+                                fbar.close();
+                                offsetAdmin = 0; stareCurenta = ADMIN_BAR;
+                            }
+                            else if (event.y >= 19 && event.y <= 21) { stareCurenta = MENIU_PRINCIPAL; }
+                        }
+                    }
+                    else if (stareCurenta == ADMIN_BILETE || stareCurenta == ADMIN_BAR) { 
+                        int yControls = 9 + 3 + (maxAdminPeEcran * 2);
+                        int xControls = (COLS - 60) / 2;
+                        int maxOffsetAdmin = istoricVanzari.size() - maxAdminPeEcran;
+                        if (event.y >= yControls && event.y <= yControls + 2) {
+                            if (offsetAdmin > 0 && event.x >= xControls && event.x <= xControls + 16) { offsetAdmin--; }
+                            else if (event.x >= xControls + 20 && event.x <= xControls + 40) { stareCurenta = ADMIN_MENIU; offsetAdmin = 0; }
+                            else if (offsetAdmin < maxOffsetAdmin && event.x >= xControls + 44 && event.x <= xControls + 60) { offsetAdmin++; }
+                        }
+                    }
+                    else if (stareCurenta == AVERTISMENT_INTARZIERE) {
+                        // --- NOU: LOGICA DE CLICK PE ECRANUL DE AVERTIZARE ---
+                        if (event.y >= 14 && event.y <= 16) {
+                            if (event.x >= xButon - 5 && event.x <= xButon - 5 + 18) {
+                                // "DA"
+                                indexSelectat = indexInAsteptare;
+                                locuriSelectateCurent.clear();
+                                stareCurenta = SELECTIE_LOCURI;
+                            } 
+                            else if (event.x >= xButon + 15 && event.x <= xButon + 15 + 18) {
+                                // "IESI"
+                                stareCurenta = BILETE;
+                                indexInAsteptare = -1;
+                            }
                         }
                     }
                     else if (stareCurenta == BILETE) {
@@ -555,7 +908,20 @@ int main() {
                                 if(indexReal >= programAzi.size()) break;
                                 int yFilm = 9 + (i * 4);
                                 if (event.y >= yFilm && event.y <= yFilm + 2 && event.x >= xButonFilm && event.x <= xButonFilm + latimeButonFilm) {
-                                    indexSelectat = indexReal; locuriSelectateCurent.clear(); stareCurenta = SELECTIE_LOCURI; 
+                                    
+                                    // --- NOU: DETECTAM DACA AM DAT CLICK PE UN BUTON ROSU DE INTARZIERE ---
+                                    int hFilmC = atoi(programAzi[indexReal].getOra().substr(0, 2).c_str());
+                                    int mFilmC = atoi(programAzi[indexReal].getOra().substr(3, 2).c_str());
+                                    int timpFilmMinC = hFilmC * 60 + mFilmC;
+                                    
+                                    if (timpCurentMin - timpFilmMinC >= 0 && timpCurentMin - timpFilmMinC <= 30) {
+                                        indexInAsteptare = indexReal;
+                                        stareCurenta = AVERTISMENT_INTARZIERE;
+                                    } else {
+                                        indexSelectat = indexReal; 
+                                        locuriSelectateCurent.clear(); 
+                                        stareCurenta = SELECTIE_LOCURI; 
+                                    }
                                 }
                             }
                         }
@@ -569,8 +935,24 @@ int main() {
                             for (auto loc : locuriSelectateCurent) {
                                 programAzi[indexSelectat].rezervaLoc(loc.first, loc.second);
                                 float pretBiletDinamice = programAzi[indexSelectat].getPretLoc(loc.first);
-                                string biletText = "Bilet: " + programAzi[indexSelectat].getFilm().getTitlu() + " (R" + to_string(loc.first+1) + " L" + to_string(loc.second+1) + ")";
-                                cos.push_back(ProdusCos(biletText, pretBiletDinamice));
+                                
+                                string titluFilmM = programAzi[indexSelectat].getFilm().getTitlu();
+                                string biletText = "Bilet: " + titluFilmM + " (R" + to_string(loc.first+1) + " L" + to_string(loc.second+1) + ")";
+                                
+                                // Extragem data curenta din sistem
+                                time_t t_bilete = time(0); tm* acum_bilete = localtime(&t_bilete);
+                                char dataStr[15];
+                                strftime(dataStr, sizeof(dataStr), "%d/%m/%Y", acum_bilete);
+
+                                char bufFisier[200];
+                                snprintf(bufFisier, sizeof(bufFisier), "%-25.25s | %-5s | %-12.12s | %-10.10s | %-10s", 
+                                         titluFilmM.c_str(), 
+                                         programAzi[indexSelectat].getOra().c_str(), 
+                                         programAzi[indexSelectat].getSala().getId().c_str(), // NOU: Folosim getId()
+                                         programAzi[indexSelectat].getFilm().getGen().c_str(),
+                                         dataStr);
+                                         
+                                cos.push_back(ProdusCos(0, biletText, string(bufFisier), pretBiletDinamice, indexSelectat, loc.first, loc.second));
                             }
                             locuriSelectateCurent.clear(); 
                         }
@@ -608,9 +990,8 @@ int main() {
                             else if (offsetBar < maxOffsetBar && event.x >= xControls + 44 && event.x <= xControls + 60) { offsetBar++; }
                         }
                         else {
-                            // Preluam ceasul real pentru click
-                            time_t t = time(0); tm* acum = localtime(&t);
-                            bool esteHappyHourNachos = (acum->tm_wday == 6 && acum->tm_hour >= 14 && acum->tm_hour < 17);
+                            time_t t_bar = time(0); tm* acum_bar = localtime(&t_bar);
+                            bool esteHappyHourNachos = (acum_bar->tm_wday == 6 && acum_bar->tm_hour >= 14 && acum_bar->tm_hour < 17);
 
                             for(int r = 0; r < maxRanduriBar; r++) {
                                 int randReal = offsetBar + r;
@@ -624,20 +1005,22 @@ int main() {
                                         string numeP = meniuBar[indexProdus].nume;
                                         float pretAdaugat = meniuBar[indexProdus].pret;
                                         
-                                        // Aplicam reducerea si la calculul final cand se adauga in cos
                                         if (numeP.find("Nachos") != string::npos && !(numeP.find("Combo") != string::npos)) {
                                             if (esteHappyHourNachos) {
                                                 pretAdaugat = pretAdaugat * 0.50;
-                                                numeP += " (Promo 50%)";
+                                                numeP += " [HAPPY HOUR 50%]";
                                             }
                                         }
+
+                                        char bufFisierBar[200];
+                                        snprintf(bufFisierBar, sizeof(bufFisierBar), "%-43.43s", numeP.c_str());
 
                                         char buffer[100];
                                         snprintf(buffer, sizeof(buffer), "%s: %.2f RON", numeP.c_str(), pretAdaugat);
                                         deseneazaButonD(yProdus, xCurent, string(buffer), 5, latimeCasuta); 
                                         refresh(); napms(100); 
                                         
-                                        cos.push_back(ProdusCos(numeP, pretAdaugat));
+                                        cos.push_back(ProdusCos(1, numeP, string(bufFisierBar), pretAdaugat));
                                     }
                                 }
                             }
@@ -645,13 +1028,57 @@ int main() {
                     }
                     else if (stareCurenta == COS) {
                         int yControls = 9 + (maxCosPeEcran * 4); int xControls = (COLS - 60) / 2; 
-                        if (event.y >= yControls && event.y <= yControls + 2 && event.x >= xControls + 20 && event.x <= xControls + 40) { stareCurenta = stareAnterioara; }
-                        else if (!cos.empty() && event.y >= yControls + 4 && event.y <= yControls + 6 && event.x >= xButon - 16 && event.x <= xButon - 16 + 27) { cos.clear(); offsetCos = 0; }
-                        else if (!cos.empty() && event.y >= yControls + 4 && event.y <= yControls + 6 && event.x >= xButon + 16 && event.x <= xButon + 16 + 27) { cos.clear(); stareCurenta = MENIU_PRINCIPAL; }
+                        
+                        if (event.y >= yControls && event.y <= yControls + 2 && event.x >= xControls + 20 && event.x <= xControls + 40) { 
+                            stareCurenta = stareAnterioara; 
+                        }
+                        else if (!cos.empty() && event.y >= yControls + 4 && event.y <= yControls + 6 && event.x >= xButon - 16 && event.x <= xButon - 16 + 27) { 
+                            for (auto& p : cos) {
+                                if (p.tip == 0 && p.indexProiectie != -1) {
+                                    programAzi[p.indexProiectie].elibereazaLoc(p.randScaun, p.locScaun);
+                                }
+                            }
+                            cos.clear(); offsetCos = 0; 
+                        }
+                        else if (!cos.empty() && event.y >= yControls + 4 && event.y <= yControls + 6 && event.x >= xButon + 16 && event.x <= xButon + 16 + 27) { 
+                            ofstream fileBilete("vanzari_bilete.txt", ios::app); 
+                            ofstream fileBar("vanzari_bar.txt", ios::app);
+                            ofstream fileLocuri("rezervari_locuri.txt", ios::app); 
+                            
+                            for (auto& produsCumparat : cos) {
+                                if (produsCumparat.tip == 0) {
+                                    if(fileBilete.is_open()) fileBilete << produsCumparat.logAdmin << " | " << produsCumparat.pret << " RON\n";
+                                    
+                                    if(fileLocuri.is_open() && produsCumparat.indexProiectie != -1) {
+                                        auto& pr = programAzi[produsCumparat.indexProiectie];
+                                        fileLocuri << pr.getFilm().getTitlu() << "|" 
+                                                   << pr.getOra() << "|" 
+                                                   << pr.getSala().getNume() << "|" 
+                                                   << produsCumparat.randScaun << "|" 
+                                                   << produsCumparat.locScaun << "\n";
+                                    }
+                                } 
+                                else if (produsCumparat.tip == 1 && fileBar.is_open()) {
+                                    fileBar << produsCumparat.logAdmin << " | " << produsCumparat.pret << " RON\n";
+                                }
+                            }
+                            
+                            if(fileBilete.is_open()) fileBilete.close();
+                            if(fileBar.is_open()) fileBar.close();
+                            if(fileLocuri.is_open()) fileLocuri.close();
+
+                            cos.clear(); 
+                            stareCurenta = MENIU_PRINCIPAL; 
+                        }
                         else {
                             for(int i = 0; i < maxCosPeEcran; i++) {
                                 int indexReal = offsetCos + i; if(indexReal >= cos.size()) break;
                                 if (event.y == 10 + (i * 4) && event.x >= xButonFilm + latimeButonFilm + 2 && event.x <= xButonFilm + latimeButonFilm + 6) {
+                                    
+                                    if (cos[indexReal].tip == 0 && cos[indexReal].indexProiectie != -1) {
+                                        programAzi[cos[indexReal].indexProiectie].elibereazaLoc(cos[indexReal].randScaun, cos[indexReal].locScaun);
+                                    }
+
                                     cos.erase(cos.begin() + indexReal);
                                     if (offsetCos > 0 && offsetCos >= cos.size()) offsetCos--;
                                     break; 
@@ -674,7 +1101,9 @@ int main() {
         else if (actiune == '0') {
             if (stareCurenta == MENIU_PRINCIPAL) ruleaza = false;
             else if (stareCurenta == SELECTIE_LOCURI) stareCurenta = BILETE;
-            else { stareCurenta = MENIU_PRINCIPAL; offsetFilme = 0; offsetBar = 0; offsetPromotii = 0; offsetCos = 0; }
+            else if (stareCurenta == ADMIN_BILETE || stareCurenta == ADMIN_BAR) stareCurenta = ADMIN_MENIU; 
+            else if (stareCurenta == AVERTISMENT_INTARZIERE) { stareCurenta = BILETE; indexInAsteptare = -1; } // NOU: Permite iesirea din avertisment cu tasta 0
+            else { stareCurenta = MENIU_PRINCIPAL; offsetFilme = 0; offsetBar = 0; offsetPromotii = 0; offsetCos = 0; offsetAdmin = 0; }
         }
     }
     endwin();              
