@@ -1,6 +1,550 @@
-Inception                 | 13:19 | IMAX         | Action     | 29/05/2026 | 10 RON
-Inception                 | 13:19 | IMAX         | Action     | 29/05/2026 | 10 RON
-Inception                 | 13:19 | IMAX         | Action     | 29/05/2026 | 10 RON
-The Dark Knight           | 16:17 | IMAX         | Action     | 29/05/2026 | 10 RON
-The Dark Knight           | 16:17 | IMAX         | Action     | 29/05/2026 | 10 RON
-The Dark Knight           | 12:58 | VIP          | Action     | 29/05/2026 | 100 RON
+Interstellar|10:00|IMAX|Sci-Fi|24/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|24/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|24/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|24/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|24/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|24/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|24/05/2026|35.00
+The Batman|10:00|STD1|Action|24/05/2026|25.00
+The Batman|10:00|STD1|Action|24/05/2026|25.00
+The Batman|10:00|STD1|Action|24/05/2026|25.00
+The Batman|10:00|STD1|Action|24/05/2026|25.00
+The Batman|10:00|STD1|Action|24/05/2026|25.00
+The Batman|10:00|STD1|Action|24/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|24/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|24/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|24/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|24/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|24/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|24/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|24/05/2026|25.00
+Inception|13:19|IMAX|Action|24/05/2026|35.00
+Inception|13:19|IMAX|Action|24/05/2026|35.00
+Inception|13:19|IMAX|Action|24/05/2026|35.00
+Inception|13:19|IMAX|Action|24/05/2026|35.00
+Inception|13:19|IMAX|Action|24/05/2026|35.00
+Inception|13:19|IMAX|Action|24/05/2026|35.00
+Spider-Man: No Way Home|13:26|STD1|Action|24/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|24/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|24/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|24/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|24/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|24/05/2026|25.00
+Parasite|16:00|VIP|Thriller|24/05/2026|100.00
+Parasite|16:00|VIP|Thriller|24/05/2026|100.00
+Parasite|16:00|VIP|Thriller|24/05/2026|100.00
+Parasite|16:00|VIP|Thriller|24/05/2026|100.00
+Parasite|16:00|VIP|Thriller|24/05/2026|100.00
+Parasite|16:00|VIP|Thriller|24/05/2026|100.00
+The Dark Knight|16:17|IMAX|Action|24/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|24/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|24/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|24/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|24/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|24/05/2026|35.00
+Gladiator II|16:24|STD2|Action|24/05/2026|25.00
+Gladiator II|16:24|STD2|Action|24/05/2026|25.00
+Gladiator II|16:24|STD2|Action|24/05/2026|25.00
+Gladiator II|16:24|STD2|Action|24/05/2026|25.00
+Gladiator II|16:24|STD2|Action|24/05/2026|25.00
+Gladiator II|16:24|STD2|Action|24/05/2026|25.00
+Interstellar|10:00|IMAX|Sci-Fi|25/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|25/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|25/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|25/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|25/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|25/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|25/05/2026|35.00
+The Batman|10:00|STD1|Action|25/05/2026|25.00
+The Batman|10:00|STD1|Action|25/05/2026|25.00
+The Batman|10:00|STD1|Action|25/05/2026|25.00
+The Batman|10:00|STD1|Action|25/05/2026|25.00
+The Batman|10:00|STD1|Action|25/05/2026|25.00
+The Batman|10:00|STD1|Action|25/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|25/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|25/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|25/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|25/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|25/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|25/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|25/05/2026|25.00
+Inception|13:19|IMAX|Action|25/05/2026|35.00
+Inception|13:19|IMAX|Action|25/05/2026|35.00
+Inception|13:19|IMAX|Action|25/05/2026|35.00
+Inception|13:19|IMAX|Action|25/05/2026|35.00
+Inception|13:19|IMAX|Action|25/05/2026|35.00
+Inception|13:19|IMAX|Action|25/05/2026|35.00
+Spider-Man: No Way Home|13:26|STD1|Action|25/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|25/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|25/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|25/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|25/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|25/05/2026|25.00
+Parasite|16:00|VIP|Thriller|25/05/2026|100.00
+Parasite|16:00|VIP|Thriller|25/05/2026|100.00
+Parasite|16:00|VIP|Thriller|25/05/2026|100.00
+Parasite|16:00|VIP|Thriller|25/05/2026|100.00
+Parasite|16:00|VIP|Thriller|25/05/2026|100.00
+Parasite|16:00|VIP|Thriller|25/05/2026|100.00
+The Dark Knight|16:17|IMAX|Action|25/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|25/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|25/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|25/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|25/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|25/05/2026|35.00
+Gladiator II|16:24|STD2|Action|25/05/2026|25.00
+Gladiator II|16:24|STD2|Action|25/05/2026|25.00
+Gladiator II|16:24|STD2|Action|25/05/2026|25.00
+Gladiator II|16:24|STD2|Action|25/05/2026|25.00
+Gladiator II|16:24|STD2|Action|25/05/2026|25.00
+Gladiator II|16:24|STD2|Action|25/05/2026|25.00
+Interstellar|10:00|IMAX|Sci-Fi|26/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|26/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|26/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|26/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|26/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|26/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|26/05/2026|35.00
+The Batman|10:00|STD1|Action|26/05/2026|25.00
+The Batman|10:00|STD1|Action|26/05/2026|25.00
+The Batman|10:00|STD1|Action|26/05/2026|25.00
+The Batman|10:00|STD1|Action|26/05/2026|25.00
+The Batman|10:00|STD1|Action|26/05/2026|25.00
+The Batman|10:00|STD1|Action|26/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|26/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|26/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|26/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|26/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|26/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|26/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|26/05/2026|25.00
+Inception|13:19|IMAX|Action|26/05/2026|35.00
+Inception|13:19|IMAX|Action|26/05/2026|35.00
+Inception|13:19|IMAX|Action|26/05/2026|35.00
+Inception|13:19|IMAX|Action|26/05/2026|35.00
+Inception|13:19|IMAX|Action|26/05/2026|35.00
+Inception|13:19|IMAX|Action|26/05/2026|35.00
+Spider-Man: No Way Home|13:26|STD1|Action|26/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|26/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|26/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|26/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|26/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|26/05/2026|25.00
+Parasite|16:00|VIP|Thriller|26/05/2026|100.00
+Parasite|16:00|VIP|Thriller|26/05/2026|100.00
+Parasite|16:00|VIP|Thriller|26/05/2026|100.00
+Parasite|16:00|VIP|Thriller|26/05/2026|100.00
+Parasite|16:00|VIP|Thriller|26/05/2026|100.00
+Parasite|16:00|VIP|Thriller|26/05/2026|100.00
+The Dark Knight|16:17|IMAX|Action|26/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|26/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|26/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|26/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|26/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|26/05/2026|35.00
+Gladiator II|16:24|STD2|Action|26/05/2026|25.00
+Gladiator II|16:24|STD2|Action|26/05/2026|25.00
+Gladiator II|16:24|STD2|Action|26/05/2026|25.00
+Gladiator II|16:24|STD2|Action|26/05/2026|25.00
+Gladiator II|16:24|STD2|Action|26/05/2026|25.00
+Gladiator II|16:24|STD2|Action|26/05/2026|25.00
+Interstellar|10:00|IMAX|Sci-Fi|27/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|27/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|27/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|27/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|27/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|27/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|27/05/2026|35.00
+The Batman|10:00|STD1|Action|27/05/2026|25.00
+The Batman|10:00|STD1|Action|27/05/2026|25.00
+The Batman|10:00|STD1|Action|27/05/2026|25.00
+The Batman|10:00|STD1|Action|27/05/2026|25.00
+The Batman|10:00|STD1|Action|27/05/2026|25.00
+The Batman|10:00|STD1|Action|27/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|27/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|27/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|27/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|27/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|27/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|27/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|27/05/2026|25.00
+Inception|13:19|IMAX|Action|27/05/2026|35.00
+Inception|13:19|IMAX|Action|27/05/2026|35.00
+Inception|13:19|IMAX|Action|27/05/2026|35.00
+Inception|13:19|IMAX|Action|27/05/2026|35.00
+Inception|13:19|IMAX|Action|27/05/2026|35.00
+Inception|13:19|IMAX|Action|27/05/2026|35.00
+Spider-Man: No Way Home|13:26|STD1|Action|27/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|27/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|27/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|27/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|27/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|27/05/2026|25.00
+Parasite|16:00|VIP|Thriller|27/05/2026|100.00
+Parasite|16:00|VIP|Thriller|27/05/2026|100.00
+Parasite|16:00|VIP|Thriller|27/05/2026|100.00
+Parasite|16:00|VIP|Thriller|27/05/2026|100.00
+Parasite|16:00|VIP|Thriller|27/05/2026|100.00
+Parasite|16:00|VIP|Thriller|27/05/2026|100.00
+The Dark Knight|16:17|IMAX|Action|27/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|27/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|27/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|27/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|27/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|27/05/2026|35.00
+Gladiator II|16:24|STD2|Action|27/05/2026|25.00
+Gladiator II|16:24|STD2|Action|27/05/2026|25.00
+Gladiator II|16:24|STD2|Action|27/05/2026|25.00
+Gladiator II|16:24|STD2|Action|27/05/2026|25.00
+Gladiator II|16:24|STD2|Action|27/05/2026|25.00
+Gladiator II|16:24|STD2|Action|27/05/2026|25.00
+Interstellar|10:00|IMAX|Sci-Fi|28/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|28/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|28/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|28/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|28/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|28/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|28/05/2026|35.00
+The Batman|10:00|STD1|Action|28/05/2026|25.00
+The Batman|10:00|STD1|Action|28/05/2026|25.00
+The Batman|10:00|STD1|Action|28/05/2026|25.00
+The Batman|10:00|STD1|Action|28/05/2026|25.00
+The Batman|10:00|STD1|Action|28/05/2026|25.00
+The Batman|10:00|STD1|Action|28/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|28/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|28/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|28/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|28/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|28/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|28/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|28/05/2026|25.00
+Inception|13:19|IMAX|Action|28/05/2026|35.00
+Inception|13:19|IMAX|Action|28/05/2026|35.00
+Inception|13:19|IMAX|Action|28/05/2026|35.00
+Inception|13:19|IMAX|Action|28/05/2026|35.00
+Inception|13:19|IMAX|Action|28/05/2026|35.00
+Inception|13:19|IMAX|Action|28/05/2026|35.00
+Spider-Man: No Way Home|13:26|STD1|Action|28/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|28/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|28/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|28/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|28/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|28/05/2026|25.00
+Parasite|16:00|VIP|Thriller|28/05/2026|100.00
+Parasite|16:00|VIP|Thriller|28/05/2026|100.00
+Parasite|16:00|VIP|Thriller|28/05/2026|100.00
+Parasite|16:00|VIP|Thriller|28/05/2026|100.00
+Parasite|16:00|VIP|Thriller|28/05/2026|100.00
+Parasite|16:00|VIP|Thriller|28/05/2026|100.00
+The Dark Knight|16:17|IMAX|Action|28/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|28/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|28/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|28/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|28/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|28/05/2026|35.00
+Gladiator II|16:24|STD2|Action|28/05/2026|25.00
+Gladiator II|16:24|STD2|Action|28/05/2026|25.00
+Gladiator II|16:24|STD2|Action|28/05/2026|25.00
+Gladiator II|16:24|STD2|Action|28/05/2026|25.00
+Gladiator II|16:24|STD2|Action|28/05/2026|25.00
+Gladiator II|16:24|STD2|Action|28/05/2026|25.00
+Interstellar|10:00|IMAX|Sci-Fi|29/05/2026|10.00
+Interstellar|10:00|IMAX|Sci-Fi|29/05/2026|10.00
+Interstellar|10:00|IMAX|Sci-Fi|29/05/2026|10.00
+Interstellar|10:00|IMAX|Sci-Fi|29/05/2026|10.00
+Interstellar|10:00|IMAX|Sci-Fi|29/05/2026|10.00
+Interstellar|10:00|IMAX|Sci-Fi|29/05/2026|10.00
+Interstellar|10:00|IMAX|Sci-Fi|29/05/2026|10.00
+The Batman|10:00|STD1|Action|29/05/2026|10.00
+The Batman|10:00|STD1|Action|29/05/2026|10.00
+The Batman|10:00|STD1|Action|29/05/2026|10.00
+The Batman|10:00|STD1|Action|29/05/2026|10.00
+The Batman|10:00|STD1|Action|29/05/2026|10.00
+The Batman|10:00|STD1|Action|29/05/2026|10.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|29/05/2026|10.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|29/05/2026|10.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|29/05/2026|10.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|29/05/2026|10.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|29/05/2026|10.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|29/05/2026|10.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|29/05/2026|10.00
+Inception|13:19|IMAX|Action|29/05/2026|10.00
+Inception|13:19|IMAX|Action|29/05/2026|10.00
+Inception|13:19|IMAX|Action|29/05/2026|10.00
+Inception|13:19|IMAX|Action|29/05/2026|10.00
+Inception|13:19|IMAX|Action|29/05/2026|10.00
+Inception|13:19|IMAX|Action|29/05/2026|10.00
+Spider-Man: No Way Home|13:26|STD1|Action|29/05/2026|10.00
+Spider-Man: No Way Home|13:26|STD1|Action|29/05/2026|10.00
+Spider-Man: No Way Home|13:26|STD1|Action|29/05/2026|10.00
+Spider-Man: No Way Home|13:26|STD1|Action|29/05/2026|10.00
+Spider-Man: No Way Home|13:26|STD1|Action|29/05/2026|10.00
+Spider-Man: No Way Home|13:26|STD1|Action|29/05/2026|10.00
+Parasite|16:00|VIP|Thriller|29/05/2026|10.00
+Parasite|16:00|VIP|Thriller|29/05/2026|10.00
+Parasite|16:00|VIP|Thriller|29/05/2026|10.00
+Parasite|16:00|VIP|Thriller|29/05/2026|10.00
+Parasite|16:00|VIP|Thriller|29/05/2026|10.00
+Parasite|16:00|VIP|Thriller|29/05/2026|10.00
+The Dark Knight|16:17|IMAX|Action|29/05/2026|10.00
+The Dark Knight|16:17|IMAX|Action|29/05/2026|10.00
+The Dark Knight|16:17|IMAX|Action|29/05/2026|10.00
+The Dark Knight|16:17|IMAX|Action|29/05/2026|10.00
+The Dark Knight|16:17|IMAX|Action|29/05/2026|10.00
+The Dark Knight|16:17|IMAX|Action|29/05/2026|10.00
+Gladiator II|16:24|STD2|Action|29/05/2026|10.00
+Gladiator II|16:24|STD2|Action|29/05/2026|10.00
+Gladiator II|16:24|STD2|Action|29/05/2026|10.00
+Gladiator II|16:24|STD2|Action|29/05/2026|10.00
+Gladiator II|16:24|STD2|Action|29/05/2026|10.00
+Gladiator II|16:24|STD2|Action|29/05/2026|10.00
+Interstellar|10:00|IMAX|Sci-Fi|30/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|30/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|30/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|30/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|30/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|30/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|30/05/2026|35.00
+The Batman|10:00|STD1|Action|30/05/2026|25.00
+The Batman|10:00|STD1|Action|30/05/2026|25.00
+The Batman|10:00|STD1|Action|30/05/2026|25.00
+The Batman|10:00|STD1|Action|30/05/2026|25.00
+The Batman|10:00|STD1|Action|30/05/2026|25.00
+The Batman|10:00|STD1|Action|30/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|30/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|30/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|30/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|30/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|30/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|30/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|30/05/2026|25.00
+Inception|13:19|IMAX|Action|30/05/2026|35.00
+Inception|13:19|IMAX|Action|30/05/2026|35.00
+Inception|13:19|IMAX|Action|30/05/2026|35.00
+Inception|13:19|IMAX|Action|30/05/2026|35.00
+Inception|13:19|IMAX|Action|30/05/2026|35.00
+Inception|13:19|IMAX|Action|30/05/2026|35.00
+Spider-Man: No Way Home|13:26|STD1|Action|30/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|30/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|30/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|30/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|30/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|30/05/2026|25.00
+Parasite|16:00|VIP|Thriller|30/05/2026|100.00
+Parasite|16:00|VIP|Thriller|30/05/2026|100.00
+Parasite|16:00|VIP|Thriller|30/05/2026|100.00
+Parasite|16:00|VIP|Thriller|30/05/2026|100.00
+Parasite|16:00|VIP|Thriller|30/05/2026|100.00
+Parasite|16:00|VIP|Thriller|30/05/2026|100.00
+The Dark Knight|16:17|IMAX|Action|30/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|30/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|30/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|30/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|30/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|30/05/2026|35.00
+Gladiator II|16:24|STD2|Action|30/05/2026|25.00
+Gladiator II|16:24|STD2|Action|30/05/2026|25.00
+Gladiator II|16:24|STD2|Action|30/05/2026|25.00
+Gladiator II|16:24|STD2|Action|30/05/2026|25.00
+Gladiator II|16:24|STD2|Action|30/05/2026|25.00
+Gladiator II|16:24|STD2|Action|30/05/2026|25.00
+Interstellar|10:00|IMAX|Sci-Fi|31/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|31/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|31/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|31/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|31/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|31/05/2026|35.00
+Interstellar|10:00|IMAX|Sci-Fi|31/05/2026|35.00
+The Batman|10:00|STD1|Action|31/05/2026|25.00
+The Batman|10:00|STD1|Action|31/05/2026|25.00
+The Batman|10:00|STD1|Action|31/05/2026|25.00
+The Batman|10:00|STD1|Action|31/05/2026|25.00
+The Batman|10:00|STD1|Action|31/05/2026|25.00
+The Batman|10:00|STD1|Action|31/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|31/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|31/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|31/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|31/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|31/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|31/05/2026|25.00
+Avatar: Way of Water|12:42|STD2|Sci-Fi|31/05/2026|25.00
+Inception|13:19|IMAX|Action|31/05/2026|35.00
+Inception|13:19|IMAX|Action|31/05/2026|35.00
+Inception|13:19|IMAX|Action|31/05/2026|35.00
+Inception|13:19|IMAX|Action|31/05/2026|35.00
+Inception|13:19|IMAX|Action|31/05/2026|35.00
+Inception|13:19|IMAX|Action|31/05/2026|35.00
+Spider-Man: No Way Home|13:26|STD1|Action|31/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|31/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|31/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|31/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|31/05/2026|25.00
+Spider-Man: No Way Home|13:26|STD1|Action|31/05/2026|25.00
+Parasite|16:00|VIP|Thriller|31/05/2026|100.00
+Parasite|16:00|VIP|Thriller|31/05/2026|100.00
+Parasite|16:00|VIP|Thriller|31/05/2026|100.00
+Parasite|16:00|VIP|Thriller|31/05/2026|100.00
+Parasite|16:00|VIP|Thriller|31/05/2026|100.00
+Parasite|16:00|VIP|Thriller|31/05/2026|100.00
+The Dark Knight|16:17|IMAX|Action|31/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|31/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|31/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|31/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|31/05/2026|35.00
+The Dark Knight|16:17|IMAX|Action|31/05/2026|35.00
+Gladiator II|16:24|STD2|Action|31/05/2026|25.00
+Gladiator II|16:24|STD2|Action|31/05/2026|25.00
+Gladiator II|16:24|STD2|Action|31/05/2026|25.00
+Gladiator II|16:24|STD2|Action|31/05/2026|25.00
+Gladiator II|16:24|STD2|Action|31/05/2026|25.00
+Gladiator II|16:24|STD2|Action|31/05/2026|25.00
+Deadpool & Wolverine|10:00|IMAX|Action|01/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|01/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|01/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|01/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|01/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|01/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|01/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|01/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|01/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|01/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|01/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|01/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|01/06/2026|35.00
+Joker: Folie a Deux|16:00|VIP|Thriller|01/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|01/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|01/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|01/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|01/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|01/06/2026|100.00
+Top Gun: Maverick|16:24|STD1|Action|01/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|01/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|01/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|01/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|01/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|01/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|01/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|01/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|01/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|01/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|01/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|01/06/2026|25.00
+Dune: Partea II|18:30|VIP|Sci-Fi|01/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|01/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|01/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|01/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|01/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|01/06/2026|100.00
+Barbie|19:05|STD1|Comedy|01/06/2026|25.00
+Barbie|19:05|STD1|Comedy|01/06/2026|25.00
+Barbie|19:05|STD1|Comedy|01/06/2026|25.00
+Barbie|19:05|STD1|Comedy|01/06/2026|25.00
+Barbie|19:05|STD1|Comedy|01/06/2026|25.00
+Barbie|19:05|STD1|Comedy|01/06/2026|25.00
+Barbie|19:05|STD1|Comedy|01/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|01/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|01/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|01/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|01/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|01/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|01/06/2026|25.00
+Deadpool & Wolverine|10:00|IMAX|Action|02/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|02/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|02/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|02/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|02/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|02/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|02/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|02/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|02/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|02/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|02/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|02/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|02/06/2026|35.00
+Joker: Folie a Deux|16:00|VIP|Thriller|02/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|02/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|02/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|02/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|02/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|02/06/2026|100.00
+Top Gun: Maverick|16:24|STD1|Action|02/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|02/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|02/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|02/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|02/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|02/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|02/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|02/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|02/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|02/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|02/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|02/06/2026|25.00
+Dune: Partea II|18:30|VIP|Sci-Fi|02/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|02/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|02/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|02/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|02/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|02/06/2026|100.00
+Barbie|19:05|STD1|Comedy|02/06/2026|25.00
+Barbie|19:05|STD1|Comedy|02/06/2026|25.00
+Barbie|19:05|STD1|Comedy|02/06/2026|25.00
+Barbie|19:05|STD1|Comedy|02/06/2026|25.00
+Barbie|19:05|STD1|Comedy|02/06/2026|25.00
+Barbie|19:05|STD1|Comedy|02/06/2026|25.00
+Barbie|19:05|STD1|Comedy|02/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|02/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|02/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|02/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|02/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|02/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|02/06/2026|25.00
+Deadpool & Wolverine|10:00|IMAX|Action|03/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|03/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|03/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|03/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|03/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|03/06/2026|35.00
+Deadpool & Wolverine|10:00|IMAX|Action|03/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|03/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|03/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|03/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|03/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|03/06/2026|35.00
+Oppenheimer|12:30|IMAX|Drama|03/06/2026|35.00
+Joker: Folie a Deux|16:00|VIP|Thriller|03/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|03/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|03/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|03/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|03/06/2026|100.00
+Joker: Folie a Deux|16:00|VIP|Thriller|03/06/2026|100.00
+Top Gun: Maverick|16:24|STD1|Action|03/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|03/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|03/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|03/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|03/06/2026|25.00
+Top Gun: Maverick|16:24|STD1|Action|03/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|03/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|03/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|03/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|03/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|03/06/2026|25.00
+Mad Max: Fury Road|18:03|STD2|Action|03/06/2026|25.00
+Dune: Partea II|18:30|VIP|Sci-Fi|03/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|03/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|03/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|03/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|03/06/2026|100.00
+Dune: Partea II|18:30|VIP|Sci-Fi|03/06/2026|100.00
+Barbie|19:05|STD1|Comedy|03/06/2026|25.00
+Barbie|19:05|STD1|Comedy|03/06/2026|25.00
+Barbie|19:05|STD1|Comedy|03/06/2026|25.00
+Barbie|19:05|STD1|Comedy|03/06/2026|25.00
+Barbie|19:05|STD1|Comedy|03/06/2026|25.00
+Barbie|19:05|STD1|Comedy|03/06/2026|25.00
+Barbie|19:05|STD1|Comedy|03/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|03/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|03/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|03/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|03/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|03/06/2026|25.00
+Avengers: Endgame|20:00|STD2|Action|03/06/2026|25.00

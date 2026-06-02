@@ -1,88 +1,116 @@
 0|Deadpool & Wolverine|10:00|IMAX
-0|Oppenheimer|12:30|IMAX
-0|Joker: Folie a Deux|16:00|IMAX
 0|Oppenheimer|10:00|VIP
-0|Joker: Folie a Deux|13:30|VIP
-0|Dune: Partea II|16:10|VIP
 0|Joker: Folie a Deux|10:00|STD1
-0|Dune: Partea II|12:40|STD1
-0|Interstellar|15:55|STD1
 0|Dune: Partea II|10:00|STD2
+0|Oppenheimer|12:30|IMAX
+0|Dune: Partea II|12:40|STD1
 0|Interstellar|13:15|STD2
+0|Joker: Folie a Deux|13:30|VIP
+0|Interstellar|15:55|STD1
+0|Joker: Folie a Deux|16:00|IMAX
+0|Dune: Partea II|16:10|VIP
 0|Inception|16:34|STD2
+0|Oppenheimer|18:45|IMAX
+0|Dune: Partea II|19:10|VIP
+0|Interstellar|19:20|STD1
+0|Joker: Folie a Deux|19:40|STD2
 1|Interstellar|10:00|IMAX
-1|Inception|13:19|IMAX
-1|The Dark Knight|16:17|IMAX
 1|Inception|10:00|VIP
-1|The Dark Knight|12:58|VIP
-1|Parasite|16:00|VIP
 1|The Dark Knight|10:00|STD1
-1|Parasite|13:02|STD1
-1|Avatar: Way of Water|15:44|STD1
 1|Parasite|10:00|STD2
 1|Avatar: Way of Water|12:42|STD2
+1|The Dark Knight|12:58|VIP
+1|Parasite|13:02|STD1
+1|Inception|13:19|IMAX
+1|Avatar: Way of Water|15:44|STD1
+1|Parasite|16:00|VIP
+1|The Dark Knight|16:17|IMAX
 1|Gladiator II|16:24|STD2
+1|The Dark Knight|18:45|VIP
+1|Parasite|19:00|STD1
+1|Inception|19:15|IMAX
+1|Avatar: Way of Water|19:30|STD2
 2|Avatar: Way of Water|10:00|IMAX
-2|Gladiator II|13:42|IMAX
-2|The Batman|16:40|IMAX
 2|Gladiator II|10:00|VIP
-2|The Batman|12:58|VIP
-2|Spider-Man: No Way Home|16:24|VIP
 2|The Batman|10:00|STD1
-2|Spider-Man: No Way Home|13:26|STD1
-2|Top Gun: Maverick|16:24|STD1
-2|Barbie|19:05|STD1
 2|Spider-Man: No Way Home|10:00|STD2
+2|The Batman|12:58|VIP
 2|Top Gun: Maverick|12:58|STD2
+2|Spider-Man: No Way Home|13:26|STD1
+2|Gladiator II|13:42|IMAX
 2|Barbie|15:39|STD2
+2|Spider-Man: No Way Home|16:24|VIP
+2|Top Gun: Maverick|16:24|STD1
+2|The Batman|16:40|IMAX
 2|Mad Max: Fury Road|18:03|STD2
+2|Barbie|19:05|STD1
+2|The Batman|19:30|VIP
+2|Gladiator II|19:45|IMAX
+2|Spider-Man: No Way Home|20:15|STD2
+2|Top Gun: Maverick|21:15|STD1
 3|Deadpool & Wolverine|10:00|IMAX
-3|Oppenheimer|12:30|IMAX
-3|Joker: Folie a Deux|16:00|IMAX
 3|Deadpool & Wolverine|10:00|VIP
-3|Oppenheimer|12:30|VIP
-3|Joker: Folie a Deux|16:00|VIP
 3|Deadpool & Wolverine|10:00|STD1
-3|Oppenheimer|12:30|STD1
-3|Joker: Folie a Deux|16:00|STD1
 3|Deadpool & Wolverine|10:00|STD2
+3|Oppenheimer|12:30|IMAX
+3|Oppenheimer|12:30|VIP
+3|Oppenheimer|12:30|STD1
 3|Oppenheimer|12:30|STD2
+3|Joker: Folie a Deux|16:00|IMAX
+3|Joker: Folie a Deux|16:00|VIP
+3|Joker: Folie a Deux|16:00|STD1
 3|Joker: Folie a Deux|16:00|STD2
+3|Deadpool & Wolverine|18:45|IMAX
+3|Deadpool & Wolverine|18:45|VIP
+3|Deadpool & Wolverine|18:45|STD1
+3|Deadpool & Wolverine|18:45|STD2
 4|Deadpool & Wolverine|10:00|IMAX
-4|Oppenheimer|12:30|IMAX
-4|Joker: Folie a Deux|16:00|IMAX
 4|Oppenheimer|10:00|VIP
-4|Joker: Folie a Deux|13:30|VIP
-4|Dune: Partea II|16:10|VIP
 4|Joker: Folie a Deux|10:00|STD1
-4|Dune: Partea II|12:40|STD1
-4|Interstellar|15:55|STD1
 4|Dune: Partea II|10:00|STD2
+4|Oppenheimer|12:30|IMAX
+4|Dune: Partea II|12:40|STD1
 4|Interstellar|13:15|STD2
+4|Joker: Folie a Deux|13:30|VIP
+4|Interstellar|15:55|STD1
+4|Joker: Folie a Deux|16:00|IMAX
+4|Dune: Partea II|16:10|VIP
 4|Inception|16:34|STD2
+4|Oppenheimer|18:45|IMAX
+4|Dune: Partea II|19:10|VIP
+4|Interstellar|19:20|STD1
+4|Joker: Folie a Deux|19:40|STD2
 5|Interstellar|10:00|IMAX
-5|Inception|13:19|IMAX
-5|The Dark Knight|16:17|IMAX
 5|Inception|10:00|VIP
-5|The Dark Knight|12:58|VIP
-5|Parasite|16:00|VIP
 5|The Dark Knight|10:00|STD1
-5|Parasite|13:02|STD1
-5|Avatar: Way of Water|15:44|STD1
 5|Parasite|10:00|STD2
 5|Avatar: Way of Water|12:42|STD2
+5|The Dark Knight|12:58|VIP
+5|Parasite|13:02|STD1
+5|Inception|13:19|IMAX
+5|Avatar: Way of Water|15:44|STD1
+5|Parasite|16:00|VIP
+5|The Dark Knight|16:17|IMAX
 5|Gladiator II|16:24|STD2
+5|The Dark Knight|18:45|VIP
+5|Parasite|19:00|STD1
+5|Inception|19:15|IMAX
+5|Avatar: Way of Water|19:30|STD2
 6|Avatar: Way of Water|10:00|IMAX
-6|Gladiator II|13:42|IMAX
-6|The Batman|16:40|IMAX
 6|Gladiator II|10:00|VIP
-6|The Batman|12:58|VIP
-6|Spider-Man: No Way Home|16:24|VIP
 6|The Batman|10:00|STD1
-6|Spider-Man: No Way Home|13:26|STD1
-6|Top Gun: Maverick|16:24|STD1
-6|Barbie|19:05|STD1
 6|Spider-Man: No Way Home|10:00|STD2
+6|The Batman|12:58|VIP
 6|Top Gun: Maverick|12:58|STD2
+6|Spider-Man: No Way Home|13:26|STD1
+6|Gladiator II|13:42|IMAX
 6|Barbie|15:39|STD2
+6|Spider-Man: No Way Home|16:24|VIP
+6|Top Gun: Maverick|16:24|STD1
+6|The Batman|16:40|IMAX
 6|Mad Max: Fury Road|18:03|STD2
+6|Barbie|19:05|STD1
+6|The Batman|19:30|VIP
+6|Gladiator II|19:45|IMAX
+6|Spider-Man: No Way Home|20:15|STD2
+6|Top Gun: Maverick|21:15|STD1

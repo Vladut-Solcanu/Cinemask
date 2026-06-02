@@ -1,5 +1,4 @@
-Vinerea HORROR|In fiecare vineri biletele la TOATE filmele sunt DOAR 10 LEI.
-REDUCERE ELEVI|Reducere 20% la orice film pe baza carnetului vizat.
-PACHETUL FAMILIEI|4 Bilete + 2 Popcorn Mare + 4 Sucuri = 160 RON!
-HAPPY HOUR LA BAR|Sambata intre 14:00 - 17:00 primesti 50% reducere la Nachos.
-Vineri 13|In prima Vineri 13 din an ai acces GRATUIT la orice film horror.
+Vinerea HORROR|In fiecare vineri biletele la TOATE filmele sunt DOAR 10 LEI.|5|ALL|ALL|BILETE_FIX|ALL|20.00
+PACHETUL FAMILIEI|4 Popcorn Mare + 4 Sucuri + 2 nachos = 150 RON!|ALL|ALL|ALL|DOAR_TEXT|NONE|0.00
+HAPPY HOUR LA BAR|Sambata intre 14:00 - 17:00 primesti 50% reducere la Nachos.|6|14:00|17:00|BAR_REDUCERE|Nachos|50.00
+Vineri 13|In prima Vineri 13 din an ai acces GRATUIT la orice film horror.|V13|ALL|ALL|BILETE_FIX|Horror|0.00
